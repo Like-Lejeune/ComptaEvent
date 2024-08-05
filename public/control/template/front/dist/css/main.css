@@ -1,0 +1,20 @@
+thead{
+    text-align: middle;
+    -ms-flex-line-pack: middle;
+        align-content: middle;
+    -webkit-box-align: center;
+        -ms-flex-align: center;
+            align-items: center;
+}
+
+
+.treeview-menu > li > a:active{
+    color: rgb(255, 255, 255);
+}
+
+/* Formulaire */
+.formulaire{
+    padding: 1% 15%;
+    margin: auto;
+    margin-bottom: 5%;
+}
