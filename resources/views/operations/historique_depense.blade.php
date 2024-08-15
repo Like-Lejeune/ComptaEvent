@@ -1,14 +1,14 @@
 <style>
     th {
-        font-size: 20px;
+        font-size: 16px;
     }
 
     td {
-        font-size: 18px;
+        font-size: 14px;
     }
 
     .pagination-container {
-        margin-top: 20px;
+        margin-top: 14px;
         display: flex;
         justify-content: center;
         align-items: center;

@@ -19,13 +19,13 @@ class serviceController extends Controller
         $this->tools = $tools;
     }
 
-    public function add_service(Request $request)
+    public function nouveauService(Request $request)
   {
 
     $validator = Validator::make($request->all(), [
 
-        'recette' => 'required',
-        'service_id' => 'required',
+        's_service' => 'required',
+        's_budget' => 'required',
     ]);
     if ($validator->fails()) {
 
@@ -34,10 +34,11 @@ class serviceController extends Controller
 
         $service = DB::table('services')->insertGetId(
             [
-                's_name' => $this->tools->controle_space($request->input('name')),
-                's_description' => $this->tools->controle_space($request->input('description')),
-                's_photo' => "default.png",
-                's_budget' => $this->tools->controle_space($request->input('budget')),
+                's_name' => $this->tools->controle_space($request->input('s_service')),
+                //'s_description' => $this->tools->controle_space($request->input('description')),
+                //'s_photo' => "default.png",
+                's_solde' => $this->tools->controle_space($request->input('s_budget')),
+                's_budget' => $this->tools->controle_space($request->input('s_budget')),
             ]
         );
     }
@@ -73,30 +74,30 @@ class serviceController extends Controller
       ->with('success', 'You have successfully update services.');
   }
 
-  public function update_Budgetservice(Request $request)
+  public function updateBudget(Request $request)
   {
     $validator = Validator::make($request->all(), [
 
         'budget' => 'required',
-        'service_id' => 'required',
+        'service' => 'required',
        
     ]);
     if ($validator->fails()) {
 
         return redirect()->back()->with('error', 'Remplissez les champs requis');
     } else {
+            $total_depense = DB::table('depense')
+              ->where('service_id', $request->service)
+              ->sum('s_depense');
 
             DB::table('services')
-            ->where('id_service', $request->id_service)
+            ->where('id_service', $request->service)
             ->update(array(
                 's_budget' => $this->tools->controle_space($request->input('budget')),
+                's_solde' => $this->tools->controle_space($request->input('budget'))- $total_depense,
             ));
  
             return redirect()->back()->with('success', 'Modification du budget réussie.');
     }
-
-
-    
-    
   }
 }

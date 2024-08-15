@@ -20,15 +20,124 @@
                 </div>
             </div>
         </div>
-        <!-- end page title -->
+        @php
+        $services = DB::table('services')
+                    ->get();        
+        @endphp
+
+        {{-- Modal service --}}
+            <div class="modal fade" id="showModal_nouveauService" data-bs-backdrop="static" tabindex="-1"
+                aria-labelledby="exampleModalLabel_" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered">
+                    <div class="modal-content">
+                        <div class="modal-header bg-light p-3">
+                            <h5 class="modal-title" id="showModal_nouveauService_" style="font-size: 20px">
+                            </h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                aria-label="Close" id="close-modal"></button>
+                        </div>
+                        <form id="admin" action="{{route('nouveauService')}}" method="POST"
+                            enctype="multipart/form-data">
+                            @csrf
+                            <div class="modal-body">
+
+                                <ul class='alert alert warning d-one' id='save_errorList'></ul>
+                                <div class="row">
+                                    <div class="mb-" id="modal-id" style="display: none;">
+                                        <label for="id-field" class="form-label">ID</label>
+
+                                    </div>
+                                    <div class="col-lg-12 mb-3">
+                                        <label for="placeholderInput" class="form-label"> <b style="font-size: 16px">
+                                            Nouveau service</label>
+                                            <input type="texte" class="form-control" name="s_service" placeholder="Ex: Sonorisation">   
+                                    </div><br>
+                                    <div class="col-lg-12 mb-3">
+                                        <label for="placeholderInput" class="form-label"> <b style="font-size: 16px">
+                                            Budget du service</label>
+                                            <input type="number" class="form-control" name="s_budget" placeholder="Ex: 5000000 XAF">   
+                                    </div><br>
+
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <div class="hstack gap-2 justify-content-end">
+                                    <button type="button" class="btn btn-light"
+                                        data-bs-dismiss="modal">Fermer</button>
+                                    <button type="submit" id="btnSave"
+                                        class="btn btn-secondary">Enregistrer</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+     {{-- end Modal service --}}
+
+      {{-- Modal budget --}}
+            <div class="modal fade" id="showModal_updateBudget" data-bs-backdrop="static" tabindex="-1"
+            aria-labelledby="exampleModalLabel_" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-header bg-light p-3">
+                        <h5 class="modal-title" id="showModal_updateBudget_" style="font-size: 20px">
+                        </h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal"
+                            aria-label="Close" id="close-modal"></button>
+                    </div>
+                    <form id="admin_" action="{{route('updateBudget')}}" method="POST"
+                        enctype="multipart/form-data">
+                        @csrf
+                        <div class="modal-body">
+
+                            <ul class='alert alert warning d-one' id='save_errorList'></ul>
+                            <div class="row">
+                                <div class="mb-" id="modal-id" style="display: none;">
+                                    <label for="id-field" class="form-label">ID</label>
+
+                                </div>
+                                <div class="col-lg-12 mb-3">
+                                    <label for="customername-field" class="form-label"
+                                        style="font-size: 16px">Choississez le service
+                                    </label>
+                                    <select class="form-select" name="service"
+                                        aria-label="Disabled select example"
+                                        style="font-size: 18
+                                        16px"  required>
+                                        @foreach ($services as $item)
+                                                <option value="{{ $item->id_service }}">
+                                                    {{ $item->s_name }}</option>
+                                        @endforeach
+
+                                    </select>
+                                   
+                                </div>
+                                <div class="col-lg-12 mb-3">
+                                    <label for="placeholderInput" class="form-label"> <b style="font-size: 16px">
+                                        Nouveau Budget</label>
+                                        <input type="number" class="form-control" name="budget" placeholder="Ex: 5000000 XAF">   
+                                </div><br>
+
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <div class="hstack gap-2 justify-content-end">
+                                <button type="button" class="btn btn-light"
+                                    data-bs-dismiss="modal">Fermer</button>
+                                <button type="submit" id="btnSave"
+                                    class="btn btn-secondary">Enregistrer</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+        {{-- end Modal budget --}}
 
         <div class="row project-wrapper">
             <div class="col-xxl-8">
                 <div class="row">
-                    @php
-                    $services = DB::table('services')
-                                ->get();        
-                    @endphp
+                   
                      @foreach ($services as $service)
                      <div class="col">
                          <div class="card explore-box card-animate rounded">
@@ -36,12 +145,6 @@
                                  <h5 class="card-title text-uppercase fw-semibold mb-1 fs-15">{{$service->s_name}}</h5>
                              </div><br>
                              <div class="explore-place-bid-img">
-                                     {{-- @if ($service->s_photo=="default.png") --}}
-                                     {{-- <img src="{{ url('images/services/image.png') }}" alt="" class="img-fluid card-img-top explore-img" /> --}}
-                                     {{-- @else --}}
-                                     {{-- <img src="{{ url('images/services') }}{{ '/'.$service->s_photo }}.p" alt="" --}}
-                                     {{-- alt="" class="img-fluid card-img-top explore-img" />  --}}
-                                     {{-- @endif --}}
                                  <div class="bg-overlay"></div>
                                  <div class="place-bid-btn">
                                      <a href="" class="btn btn-danger"><i class="ri-auction-fill align-bottom me-1"></i>Consulter</a>
@@ -55,12 +158,13 @@
  
                              $conso=($sumdep*100)/$service->s_budget
                             @endphp
+                           
                              <div class="card-footer border-top border-top-dashed">
+                                <a type="button" href="{{ route('historique_depense', $service->id_service) }}">
                                  <div class="d-flex align-items-center">
                                      <div class="flex-grow-1 fs-14">
                                          <i class="ri-price-tag-3-fill text-warning align-bottom me-1"></i> BUDGET: <span class="counter-value" data-target="{{$service->s_budget}}">0</span><br>
-                                         <i class="ri-price-tag-3-fill text-warning align-bottom me-1"></i> DEPENSES: <span class="counter-value" data-target="{{$sumdep}}">0</span><br>
-                                         <i class="ri-price-tag-3-fill text-warning align-bottom me-1"></i> SOLDE : <span class="counter-value" data-target="{{$service->s_solde}}">0</span><br>
+                                         <i class="ri-price-tag-3-fill text-warning align-bottom me-1"></i> DEPENSES: <span class="counter-value" data-target="{{$sumdep}}">0</span><br><br>
                                          <p class="mb-1">Consommation du Budget </p>
                                              <div class="progress mt-2" style="height: 10px;">
                                                  <div class="progress-bar progress-bar-striped progress-bar-animated bg-danger" role="progressbar" style="width:{{number_format($conso, 2)}}%" aria-valuenow="75" aria-valuemin="0" aria-valuemax="75"></div>
@@ -68,9 +172,10 @@
                                 
                                           <p class="mb-1">Pourcentage : {{number_format($conso, 2)}} %</p>
                                      </div>
-                                     <h5 class="flex-shrink-0 fs-14 text-primary mb-0"></h5>
                                  </div>
+                                </a>
                              </div>
+                            
                          </div>
                          <!--end card-->
                  </div>
@@ -130,14 +235,14 @@
                                     </div>
                                     <!--end col-->
                                     @php
-                                      $sumPrix = DB::table('recette')
-                                      ->sum('s_recette');
+                                     $sumPrix = DB::table('services')
+                                    ->sum('s_solde');
                                     @endphp
                                     <div class="col-6 col-sm-3">
                                         <div class="p-3 border border-dashed border-start-0 border-end-0">
                                             <h5 class="mb-1 text-success"><span class="counter-value"
                                                     data-target="{{$sumPrix}}">0</span> FCFA</h5>
-                                            <p class="text-muted mb-0">Total recettes</p>
+                                            <p class="text-muted mb-0">Solde Total restant</p>
                                         </div>
                                     </div>
                                     <!--end col-->
@@ -154,7 +259,7 @@
                     </div><!-- end col -->
                 </div><!-- end row -->
             </div><!-- end col -->
-
+ 
             <div class="col-xxl-4">
                 <div class="card">
                     <div class="card-header border-0">
@@ -163,9 +268,9 @@
                     <div class="card-body pt-0">
                         <div class="live-preview">
                             <div class="d-flex flex-wrap gap-2">
-                                {{-- <a href="{{ route('nouvelleRecette') }}" type="button" class="btn btn-outline-dark waves-effect waves-light">Ajouter une recette</a> --}}
                                 <a href="{{ route('nouvelleDepense') }}" type="button" class="btn btn-outline-secondary waves-effect waves-light">Ajouter une dépense</a>
-                                <a href="#" type="button" class="btn btn-outline-danger waves-effect waves-light">Modifier un Budget</a>
+                                <a type="button" class="btn btn-outline-dark waves-effect waves-light" onclick="service()">Ajouter un service</a>
+                                <a type="button" class="btn btn-outline-danger waves-effect waves-light" onclick="budget()">Modifier un Budget</a>
                             </div>
                         </div>
                     </div><!-- end cardbody -->
@@ -176,4 +281,20 @@
     </div>
     <!-- container-fluid -->
 </div>
-@include('template.footer');
+
+
+<script src="{{ url('control/others/code.jquery.com/jquery-3.6.0.min.js') }}"
+    integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+<script src="{{ url('control/js/pages/notifications.init.js') }}"></script>
+<script>
+    function budget() {
+        $('#showModal_updateBudget_').html("Modifier le Budget");
+        $('#showModal_updateBudget').modal('show');
+    };
+    function service() {
+        $('#showModal_nouveauService_').html("Nouveau service");
+        $('#showModal_nouveauService').modal('show');
+    };
+</script>
+
+@include('template.footer')

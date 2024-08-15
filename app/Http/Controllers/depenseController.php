@@ -28,12 +28,20 @@ class depenseController extends Controller
         $service = DB::table('depense')
             ->where('service_id', $service_id)
             ->first();
+        $count = DB::table('depense')
+            ->where('service_id', $service_id)
+            ->count();
         $info_service = DB::table('services')
             ->where('id_service', $service_id)
             ->first();
-        return view('operations.historique_depense')
+        if ($count>0) {
+            return view('operations.historique_depense')
             ->with('service',$service)
             ->with('info',$info_service);
+        } else {
+            return redirect()->back();
+        }
+        
     }
 
     //

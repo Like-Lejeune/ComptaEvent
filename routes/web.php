@@ -41,20 +41,13 @@ Route::middleware(['auth'])->group(function () {
     Route::get('administrator', [Menu::class, 'administrator'])->name('administrator');
     Route::get('nouvelleDepense', [depense::class, 'nouvelle_depense'])->name('nouvelleDepense');
     Route::get('DocsTelecharger/{depense_id}', [depense::class, 'DocsTelecharger'])->name('DocsTelecharger');
-    Route::get('nouvelleRecette', [recette::class, 'nouvelle_recette'])->name('nouvelleRecette');
-    Route::get('nouvelleBudget', [recette::class, 'nouvelle_recette'])->name('nouveauBudget');
     Route::get('user_menu', [Menu::class, 'user_menu'])->name('user_menu');
 
     Route::get('historique_depense/{service_id}', [depense::class, 'historique_depense'])->name('historique_depense');
-    Route::get('historique_recette/{service_id}', [recette::class, 'historique_recette'])->name('historique_recette');
-
-    Route::get('historique/{service_id}', [service::class, 'historique_recette'])->name('historique_recette');
-
-
-    
-    Route::post('submit_recette', [recette::class, 'submit_recette'])->name('submit_recette');
     Route::post('submit_depense', [depense::class, 'submit_depense'])->name('submit_depense');
 
+    Route::post('nouveauService', [service::class, 'nouveauService'])->name('nouveauService');
+    Route::post('updateBudget', [service::class, 'updateBudget'])->name('updateBudget');
 
 
 
