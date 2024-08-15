@@ -91,7 +91,7 @@
                                 <div class="col-lg-6">
                                     <div class="p-lg-5 p-4">
                                         <div>
-                                            <h5 class="text-primary">MA COMPTA</h5>
+                                            <h5 class="text-primary">COMPTA-EVENT</h5>
                                             <p class="text-muted">connexion.</p>
                                         </div>
                                         <h6 style="color: red ;">
@@ -148,7 +148,7 @@
                     <div class="col-lg-12">
                         <div class="text-center">
                             <p class="mb-0"><b>&copy;
-                              <script>document.write(new Date().getFullYear())</script> </b><b>COMPTA</b>
+                              <script>document.write(new Date().getFullYear())</script> </b><b>COMPTA-EVENT</b>
                             </p>
                         </div>
                     </div>

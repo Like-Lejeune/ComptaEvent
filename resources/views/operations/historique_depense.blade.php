@@ -217,10 +217,11 @@
                                 <thead class="table-primary">
                                     <tr>
                                         <th data-sort="# ">N°</th>
-                                        <th data-sort="">Valeur</th>
+                                        <th data-sort="# ">Désignation</th>
+                                        <th data-sort="">Depense</th>
                                         <th data-sort="">description</th>
                                         <th data-sort="">pièce jointe</th>
-                                        <th data-sort="">date</th>
+                                        <th data-sort="">date opération</th>
                                         <th data-sort="">Action</th>
                                     </tr>
                                 </thead>
@@ -229,18 +230,21 @@
                                     @forelse ( $depense as $depense)
                                         <tr>
                                             <td data-sort="">{{ $val++ }}</td>
+                                            <td data-sort="">{{ html_entity_decode($depense->d_name) }}</td>
                                             <td data-sort=""> <b>{{ html_entity_decode($depense->s_depense) }}</b>
                                             </td>
-                                            <td data-sort=""><small
-                                                    class="badge badge-soft-dark">{{ html_entity_decode($depense->d_description) }}</small>
+                                            <td data-sort=""><small>{{ html_entity_decode($depense->d_description) }}</small>
                                             </td>
-                                            <td data-sort="">#</td>
+                                            @php
+                                                 $nb_piece = DB::table('piece_jointe')
+                                                ->where('depense_id','=',$depense->id_depense)
+                                                ->count();
+                                            @endphp
+                                            <td data-sort=""></strong>{{$nb_piece}}<a
+                                                href="{{ route('DocsTelecharger',$depense->id_depense) }}"></td>
                                             <td data-sort=""><small class="badge badge-soft-primary">
-                                                    {{ $depense->created_at }}</small> </td>
+                                                    {{ $depense->date_operation }}</small> </td>
                                             <td data-sort="">
-                                               
-                                                    <a type="button" class="btn btn-soft-danger"
-                                                        href="#">Modifier (Paiement requis)</a>
                                                     <a type="button" class="btn btn-soft-dark"
                                                         href="#">imprimer </a>
                                                

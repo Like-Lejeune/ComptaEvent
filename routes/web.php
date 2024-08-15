@@ -40,6 +40,7 @@ Route::get('reset_password', [connexion::class, 'reset_password'])->name('reset_
 Route::middleware(['auth'])->group(function () {
     Route::get('administrator', [Menu::class, 'administrator'])->name('administrator');
     Route::get('nouvelleDepense', [depense::class, 'nouvelle_depense'])->name('nouvelleDepense');
+    Route::get('DocsTelecharger/{depense_id}', [depense::class, 'DocsTelecharger'])->name('DocsTelecharger');
     Route::get('nouvelleRecette', [recette::class, 'nouvelle_recette'])->name('nouvelleRecette');
     Route::get('nouvelleBudget', [recette::class, 'nouvelle_recette'])->name('nouveauBudget');
     Route::get('user_menu', [Menu::class, 'user_menu'])->name('user_menu');

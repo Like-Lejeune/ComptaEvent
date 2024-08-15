@@ -81,12 +81,6 @@
 
 
         <br><br>
-        @if ($message = Session::get('success'))
-            <div class="alert alert-success alert-block">
-                <strong>{{ $message }}</strong>
-            </div>
-        @endif
-
         <div class="row mt-2">
             <div class="col-lg-12">
                 <form id="admin" action="{{ route('submit_depense') }}"  method="POST" enctype="multipart/form-data">
@@ -101,7 +95,12 @@
                             <div class="card-body">
                                 <div class="col-xxl-6">
                                     <label for="placeholderInput" class="form-label"> <b style="font-size: 16px">
-                                        Service </b> </label>
+                                        Designation<b style="color: red;">*</b></b> </label>
+                                        <input type="text" class="form-control" name="designation" placeholder="designation de la dépense">   
+                                </div><br>
+                                <div class="col-xxl-6">
+                                    <label for="placeholderInput" class="form-label"> <b style="font-size: 16px">
+                                        Service <b style="color: red;">*</b></b> </label>
                                     <select class="js-example-basic-multiple"  name="service_id">
                                         @foreach ( $service as $service )
                                         <option value="{{$service->id_service}}">
@@ -109,7 +108,8 @@
                                         </option>
                                         @endforeach
                                     </select>
-                                </div>
+                                </div><br>
+                                
                                 <div class="col-xxl-6">
                                     <label for="placeholderInput" class="form-label"> <b style="font-size: 16px">
                                         Choisir le montant (XAF) </b> </label>
@@ -131,18 +131,26 @@
                             </div>
                             <div class="card-body">
                                 <div class="row">
+                                    <!-- Input Date -->
+                                    <div class="col-xxl-6">
+                                        <div>
+                                            <label for="exampleInputdate" class="form-label">Date de l'opération <b style="color: red;">*</b></b> </label>
+                                            <input type="datetime-local" class="form-control" name="date_operation" id="exampleInputdate">
+                                        </div>
+                                    </div>
                                     <div class="col-xxl-6">
                                         <div>
                                             <label class="form-label" for="project-thumbnail-img">Pièces jointes (images ou
                                                 textes)</label>
-                                            <input class="form-control" id="project-thumbnail-img" type="file" name="link_doc[]" multiple  accept="image/png, image/pdf, image/jpeg, image/word">
+                                            <input class="form-control" id="project-thumbnail-img" type="file" name="link_piece[]" multiple  accept="image/png, image/pdf, image/jpeg, image/word">
                                         </div>
                                     </div>
+
                                     
                                     <div class="col-xxl-6">
                                         <div>
-                                            <label for="exampleFormControlTextarea5" class="form-label" name="supplement_forme">Informations supplémentaires</label>
-                                            <textarea class="form-control" id="exampleFormControlTextarea5" rows="3"></textarea>
+                                            <label for="exampleFormControlTextarea5" class="form-label" >Informations supplémentaires</label>
+                                            <textarea class="form-control" id="exampleFormControlTextarea5"name="sup_info"  rows="3"></textarea>
                                         </div>
                                     </div>
                                 </div>
@@ -153,7 +161,7 @@
                                             <button type="submit"
                                             class="btn btn-danger btn-label waves-effect waves-light" id="Bsubmit"><i
                                                 class="ri-check-double-line label-icon align-middle fs-16 me-2"></i><b
-                                                style="font-size: 20px">PAYER</b> </button>
+                                                style="font-size: 16px">Enrégistrer</b> </button>
                                     </div>
                                 </div>
                             </div>

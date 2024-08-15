@@ -74,7 +74,8 @@ class connexion extends Controller
 
     
     public function t_verification(Request $request)
-    {
+    {   
+        
         $request->validate([
 
             'email' => 'required|email',
@@ -82,22 +83,18 @@ class connexion extends Controller
 
         ]);
         if (auth()->attempt($request->only('email', 'password'))) {
+            
             $user = DB::table('users')->where('email', $this->controle_space($request->input('email')))->first();
         
-
-           
-
             if($user->type=="admin" || $user->type=="super"){
                 
-               
-             
                 return redirect()->route('administrator');
-              
+        
             }
             if($user->type=="user"){
 
                // return redirect()->route('client_menu');
-                return redirect()->route('user_menu');
+                return redirect()->route('user_menu');  
 
             }       
         }

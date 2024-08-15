@@ -11,14 +11,10 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('depense', function (Blueprint $table) {
-            $table->id('id_depense');
-            $table->unsignedBigInteger('service_id');
-            $table->string('d_name', 60)->default("");
-            $table->unsignedBigInteger('user_id');
-            $table->text('d_description')->default("");
-            $table->timestamp('date_operation')->nullable();
-            $table->bigInteger('s_depense', false)->default(0);
+        Schema::create('piece_jointe', function (Blueprint $table) {
+            $table->id('id_piece');
+            $table->unsignedBigInteger('depense_id');
+            $table->string('piece_name', 60)->default("");
             $table->timestamp('created_at')->useCurrent();
             $table->timestamp('updated_at')->nullable()->default(null);
         });
@@ -29,6 +25,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('depense');
+        Schema::dropIfExists('piece_jointe');
     }
 };
