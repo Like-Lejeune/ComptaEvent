@@ -189,8 +189,8 @@
                             <div class="card-header border-0 align-items-center d-flex">
                                 <h4 class="card-title mb-0 flex-grow-1">Statistiques</h4>
                                 <div>
-                                    <button type="button" class="btn btn-soft-secondary btn-sm shadow-none">
-                                        TOUT
+                                    <button type="button"  href="{{ route('etat_service_pdf', $service->id_service) }}" class="btn btn-soft-dark btn-sm shadow-none">
+                                        IMPRIMER
                                     </button>
 
                                 </div>

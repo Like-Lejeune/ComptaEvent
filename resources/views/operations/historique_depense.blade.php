@@ -65,9 +65,9 @@
                     <div class="card-header border-0 align-items-center d-flex">
                         <h4 class="card-title mb-0 flex-grow-1">Statistiques</h4>
                         <div>
-                            <button type="button" class="btn btn-soft-secondary btn-sm shadow-none">
-                                TOUT
-                            </button>
+                            <a type="button"  href="{{ route('etat_service_pdf', $service->service_id) }}" target="_blank" class="btn btn-soft-dark btn-sm shadow-none">
+                                Imprimer
+                            </a>
 
                         </div>
                     </div><!-- end card header -->
@@ -81,9 +81,9 @@
                             @endphp
                             <div class="col-6 col-sm-3">
                                 <div class="p-3 border border-dashed border-start-0">
+                                    <p class="text-muted mb-0">Total opérations</p>
                                     <h5 class="mb-1"><span class="counter-value"
                                             data-target="{{$countService}}">0</span></h5>
-                                    <p class="text-muted mb-0">Total opérations</p>
                                 </div>
                             </div>
                             <!--end col-->
@@ -94,9 +94,9 @@
                             @endphp
                             <div class="col-6 col-sm-3">
                                 <div class="p-3 border border-dashed border-start-0">
-                                    <h5 class="mb-1"><span class="counter-value"
-                                            data-target="{{$sumPrix}}">0</span></h5>
                                     <p class="text-muted mb-0">Total budget</p>
+                                    <h5 class="mb-1"><span class="counter-value"
+                                        data-target="{{$sumPrix}}">0</span> XAF</h5>
                                 </div>
                             </div>
                             <!--end col-->
@@ -107,22 +107,28 @@
                             @endphp
                             <div class="col-6 col-sm-3">
                                 <div class="p-3 border border-dashed border-start-0">
-                                    <h5 class="mb-1"><span class="counter-value"
-                                            data-target="{{$sumPrix}}">0</span> FCFA</h5>
                                     <p class="text-muted mb-0">Total dépenses</p>
+                                    <h5 class="mb-1"><span class="counter-value"
+                                        data-target="{{$sumPrix}}">0</span> XAF</h5>
                                 </div>
                             </div>
                             <!--end col-->
                             @php
-                              $sumPrix = DB::table('depense')
-                                 ->where('service_id', '=', $service->service_id)
-                                 ->sum('s_depense');
+                                 $solde = DB::table('services')
+                                    ->where('id_service', '=', $service->service_id)
+                                    ->sum('s_solde');
                             @endphp
                             <div class="col-6 col-sm-3">
                                 <div class="p-3 border border-dashed border-start-0 border-end-0">
-                                    <h5 class="mb-1 text-success"><span class="counter-value"
-                                            data-target="{{$sumPrix}}">0</span> FCFA</h5>
-                                    <p class="text-muted mb-0">Dépassement</p>
+                                    @if ($solde < 0)
+                                    <p class="text-muted mb-0"><b style="color: red;">Dépassement du Budget de :</b></p> 
+                                    <h5 class="mb-1 text-success"><b style="color: red;"><span class="counter-value"
+                                        data-target="{{abs( $solde)}}">0</span> XAF </b></h5>
+                                    @else
+                                    <p class="text-muted mb-0"><b style="color: rgb(38, 0, 255);">Solde Réel :</b></p>
+                                    <h5 class="mb-1 text-dark"><b style="color: rgb(38, 0, 255);"><span class="counter-value"
+                                        data-target="{{abs( $solde)}}">0</span> XAF</b></h5>
+                                    @endif
                                 </div>
                             </div>
                             <!--end col-->
@@ -240,13 +246,13 @@
                                                 ->where('depense_id','=',$depense->id_depense)
                                                 ->count();
                                             @endphp
-                                            <td data-sort=""></strong>{{$nb_piece}}<a
-                                                href="{{ route('DocsTelecharger',$depense->id_depense) }}"></td>
+                                              <td data-sort=""></strong>{{$nb_piece}}
+                                              <a href="{{ route('DocsTelecharger', $depense->id_depense) }}"> Telecharger</a></td>
                                             <td data-sort=""><small class="badge badge-soft-primary">
                                                     {{ $depense->date_operation }}</small> </td>
                                             <td data-sort="">
-                                                    <a type="button" class="btn btn-soft-dark"
-                                                        href="#">imprimer </a>
+                                                    <a type="button" target="_blank" class="btn btn-soft-dark"
+                                                        href="{{ route('etat_service_pdf', $service->service_id) }}">imprimer </a>
                                                
 
                                             </td>

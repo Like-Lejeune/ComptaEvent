@@ -8,7 +8,7 @@ use App\Http\Controllers\Transactions\PaymentController as paiement;
 use App\Http\Controllers\logController  as logs;
 use App\Http\Controllers\serviceController  as service;
 use App\Http\Controllers\depenseController  as depense;
-use App\Http\Controllers\recetteController  as recette;
+use App\Http\Controllers\pdfController  as pdf;
 
 //use Mail;
 /*
@@ -48,6 +48,9 @@ Route::middleware(['auth'])->group(function () {
 
     Route::post('nouveauService', [service::class, 'nouveauService'])->name('nouveauService');
     Route::post('updateBudget', [service::class, 'updateBudget'])->name('updateBudget');
+
+
+    Route::get('etat_service_pdf/{service_id}', [pdf::class, 'etat_service_pdf'])->name('etat_service_pdf');
 
 
 
