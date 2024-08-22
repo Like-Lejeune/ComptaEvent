@@ -21,8 +21,9 @@
             </div>
         </div>
         @php
-        $services = DB::table('services')
-                    ->get();        
+       $services = DB::table('services')
+              ->orderBy('s_name', 'asc')     // Puis par nom au sein de chaque catégorie
+              ->get();    
         @endphp
 
         {{-- Modal service --}}
@@ -189,9 +190,9 @@
                             <div class="card-header border-0 align-items-center d-flex">
                                 <h4 class="card-title mb-0 flex-grow-1">Statistiques</h4>
                                 <div>
-                                    <button type="button"  href="{{ route('etat_service_pdf', $service->id_service) }}" class="btn btn-soft-dark btn-sm shadow-none">
+                                    <a type="button"  href="{{ route('etat_global_pdf', $service->id_service) }}" class="btn btn-soft-dark btn-sm shadow-none">
                                         IMPRIMER
-                                    </button>
+                                    </a>
 
                                 </div>
                             </div><!-- end card header -->

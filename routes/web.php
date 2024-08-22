@@ -51,6 +51,7 @@ Route::middleware(['auth'])->group(function () {
 
 
     Route::get('etat_service_pdf/{service_id}', [pdf::class, 'etat_service_pdf'])->name('etat_service_pdf');
+    Route::get('etat_global_pdf', [pdf::class, 'etat_global_pdf'])->name('etat_global_pdf');
 
 
 
