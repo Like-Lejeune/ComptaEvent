@@ -13,8 +13,6 @@ use Illuminate\Support\Facades\Validator;
 class option_accountController extends Controller
 {
     //
-
-
      //
      public function controle_space($chaine)
      {
