@@ -35,7 +35,7 @@ class user_serviceController extends Controller
     
             return response()->json(['message' => 'Veuillez corriger les erreurs suivantes :', 'errors' => $validator->errors()], 400);
 
-        }  else {
+        } else {
                 if ($request->input('password') !== null && $request->input('password') !== '') {
                     $password = $this->tools->crypterChaine($this->tools->controle_space($request->input('password')));
                 } else {
@@ -56,6 +56,18 @@ class user_serviceController extends Controller
             $user->type = $type;
             $user->password  = $password;
             $user->save();
+            $lastInsertedId = $user->id;
+
+            if ($request->has('service')) {
+                foreach ($request->input('service') as $choice) {
+                    DB::table('user_service')->insert(
+                        [
+                            'service_id' => $choice,
+                            'user_id' => $lastInsertedId
+                        ]
+                    );
+                }
+            }
         }
         return redirect()->back()
           ->with('success', 'You have successfully add user.');
@@ -67,7 +79,7 @@ class user_serviceController extends Controller
       
     }
 
-    public function update(Request $request, string $id)
+    public function updateUser(Request $request, string $id)
     {
         //
 
@@ -86,19 +98,50 @@ class user_serviceController extends Controller
                         'type' => $request->input('type') !== null ? $this->tools->controle_space($request->input('type')) : $user->type,
                         'updated_at' => $this->tools->HeureLocale(),
                     ));
-                $user = DB::table('users')
-                    ->where('id', $id)
-                    ->first();
+
+                
                     return redirect()->back()->with('success', 'You have successfully update user.');
             }
-            return response()->json(['message' => 'User not found'], 404);
+
+            if ($request->has('service')) {
+                $newChoices = $request->input('service'); // Les nouveaux choix sélectionnés
+    
+                $existingChoices = DB::table('user_service')
+                    ->where('user_id', $id)
+                    ->pluck('service_id') // Récupère uniquement les valeurs de 'service_id'
+                    ->toArray();
+            
+                // Identifier les choix à ajouter
+                $choicesToAdd = array_diff($newChoices, $existingChoices);
+            
+                // Identifier les choix à supprimer
+                $choicesToDelete = array_diff($existingChoices, $newChoices);
+            
+                // Ajouter les nouveaux choix
+                foreach ($choicesToAdd as $choice) {
+                    DB::table('user_service')->insert([
+                        'service_id' => $choice,
+                        'user_id' => $id,
+                    ]);
+                }
+            
+                // Supprimer les choix qui ne sont plus sélectionnés
+                if (!empty($choicesToDelete)) {
+                    DB::table('user_service')
+                        ->where('user_id', $id)
+                        ->whereIn('service_id', $choicesToDelete)
+                        ->delete();
+                }
+            }
+
+            return response()->json(['message' => 'Update Ok'], 200);
         } catch (QueryException $e) {
 
             return response()->json($e->getMessage());
         }
     }
 
-    public function destroy(string $id)
+    public function destroyUser(string $id)
     {
 
         try {
@@ -109,6 +152,12 @@ class user_serviceController extends Controller
                 $user = DB::table('users')
                     ->where('id', $id)
                     ->delete();
+
+                $user = DB::table('user_service')
+                    ->where('user_id', $id)
+                    ->delete();
+
+
                     return redirect()->back()->with('success', 'You have successfully update user.');
             }
             return response()->json(['message' => 'user not found'], 404);
@@ -117,8 +166,30 @@ class user_serviceController extends Controller
             return response()->json($e->getMessage());
         }
     }
+        public function ActivateOrdesactivateUser(string $id)
+    {
+        try {
+            // Récupérer l'utilisateur par son ID
+            $user = DB::table('users')->where('id', $id)->first();
 
+            // Vérifier si l'utilisateur existe
+            if (!$user) {
+                return response()->json(['error' => 'Utilisateur non trouvé.'], 404);
+            }
 
+            // Inverser le statut actuel
+            $newStatus = $user->status == 1 ? 0 : 1;
 
-    
+            // Mettre à jour le statut de l'utilisateur
+            DB::table('users')->where('id', $id)->update(['status' => $newStatus]);
+
+            // Retourner une réponse réussie
+            $message = $newStatus == 1 ? 'Utilisateur activé avec succès.' : 'Utilisateur désactivé avec succès.';
+            return response()->json(['message' => $message], 200);
+
+        } catch (QueryException $e) {
+            // Gérer les erreurs de base de données
+            return response()->json(['error' => 'Une erreur s\'est produite : ' . $e->getMessage()], 500);
+        }
+    }
 }
