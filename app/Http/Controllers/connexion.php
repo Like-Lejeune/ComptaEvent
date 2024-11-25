@@ -83,20 +83,22 @@ class connexion extends Controller
 
         ]);
         if (auth()->attempt($request->only('email', 'password'))) {
-            
             $user = DB::table('users')->where('email', $this->controle_space($request->input('email')))->first();
         
-            if($user->type=="admin" || $user->type=="super"){
-                
-                return redirect()->route('administrator');
-        
+            if ($user->status == 0) {
+                // Si le statut est 0, déconnexion immédiate et message d'erreur
+                auth()->logout();
+                return redirect()->back()->with('error', 'Votre compte est inactif. Veuillez contacter l\'administrateur.');
             }
-            if($user->type=="user"){
-
-               // return redirect()->route('client_menu');
-                return redirect()->route('user_menu');  
-
-            }       
+        
+            // Vérification des types d'utilisateur
+            if ($user->type == "admin" || $user->type == "super") {
+                return redirect()->route('administrator');
+            }
+        
+            if ($user->type == "user") {
+                return redirect()->route('user_menu');
+            }
         }
 
         return redirect()->back()->withErrors('Identification incorrecte');
