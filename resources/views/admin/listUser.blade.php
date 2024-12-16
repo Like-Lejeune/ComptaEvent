@@ -1,3 +1,5 @@
+@include('template.header')
+
 <style>
     th {
         font-size: 16px;
@@ -17,7 +19,7 @@
     /* Ajoutez d'autres styles personnalisés selon vos préférences */
 </style>
 
-@include('template.header')
+
 
 
 
@@ -48,7 +50,7 @@
                         <div class="d-flex justify-content-between">
                             <div>
                                 <h2 class="mt-4 ff-secondary fw-semibold text-white">
-                                    Comptes:  
+                                    COMPTES
                                 </h2>
                             </div>
                             <div>
@@ -74,39 +76,25 @@
 
                     <div class="card-header p-0 border-0 bg-soft-light">
                         <div class="row g-0 text-center">
-                            <div class="col-6 col-sm-3">
+                            <div class="col-6 col-sm-4">
                                 <div class="p-3 border border-dashed border-start-0">
-                                    <p class="text-muted mb-0"></p>
-                                    <h5 class="mb-1"><span class="counter-value"
-                                            data-target="25">0</span></h5>
+                                    <a href="{{ route('formUser') }}" type="button" class="btn btn-outline-success waves-effect waves-light">Ajouter utilisateur</a>
                                 </div>
                             </div>
                             <!--end col-->
-                            <div class="col-6 col-sm-3">
+                            <div class="col-6 col-sm-4">
                                 <div class="p-3 border border-dashed border-start-0">
-                                    <p class="text-muted mb-0">Total budget</p>
+                                    <p class="text-muted mb-0">Total utilisateur</p>
                                     <h5 class="mb-1"><span class="counter-value"
-                                        data-target="">0</span> XAF</h5>
+                                        data-target="{{$nbuser}}">0</span> </h5>
                                 </div>
                             </div>
                             <!--end col-->
-                            <div class="col-6 col-sm-3">
+                            <div class="col-6 col-sm-4">
                                 <div class="p-3 border border-dashed border-start-0">
-                                    <p class="text-muted mb-0">Total dépenses</p>
+                                    <p class="text-muted mb-0">Compte désactivé</p>
                                     <h5 class="mb-1"><span class="counter-value"
-                                        data-target="">0</span> XAF</h5>
-                                </div>
-                            </div>
-                            <!--end col-->
-                           
-                            <div class="col-6 col-sm-3">
-                                <div class="p-3 border border-dashed border-start-0 border-end-0">
-                                    
-                                    <p class="text-muted mb-0"><b style="color: red;">Dépassement du Budget de :</b></p> 
-                                    <h5 class="mb-1 text-success"><b style="color: red;"><span class="counter-value"
-                                        data-target="{">0</span> XAF </b></h5>
-                                  
-                                    <
+                                        data-target="{{$nbuserUnactive}}">0</span> </h5>
                                 </div>
                             </div>
                             <!--end col-->
@@ -133,7 +121,6 @@
                     <div class="card-body">
                         <div class=table-responsive>
                             @php
-                
                                 $search = isset($_GET['search']) ? $_GET['search'] : '';
                                 $users = DB::table('users')
                                     ->where(function ($query) use ($search) {
@@ -143,7 +130,7 @@
                                     }) // Filtrer par nom de projet
                                     ->select('*')
                                     ->paginate(10);
-                                $val = $users->firstItem();
+                                 $val= $users->firstItem();
                             @endphp
                             <div class="col-lg-8">
                                 <div class="row">
@@ -165,7 +152,7 @@
                             <br>
                             <div class="col-sm-auto mb-2">
                                 <!-- First modal dialog -->
-                                <div class="modal fade" id="Delete_" aria-hidden="true" tabindex="-1">
+                                <div class="modal fade" id="Delete" aria-hidden="true" tabindex="-1">
                                     <div class="modal-dialog modal-dialog-centered">
                                         <div class="modal-content">
                                             <form id="admin_" action="#" method="POST"
@@ -194,15 +181,16 @@
                                     </div>
                                 </div>
 
-                                <div class="modal fade" id="ActiveOrDesactive_" aria-hidden="true" tabindex="-1">
+                                <div class="modal fade" id="ActiveOrDesactive" aria-hidden="true" tabindex="-1">
                                     <div class="modal-dialog modal-dialog-centered">
                                         <div class="modal-content">
                                             <form id="admin_" action="#" method="POST"
                                                 enctype="multipart/form-data">
                                                 @csrf
                                                 <div class="modal-body text-center p-5">
-                                                    <lord-icon src="https://cdn.lordicon.com/jmkrnisz.json"
-                                                        trigger="loop" colors="primary:#121331"
+                                                    <lord-icon
+                                                        src="https://cdn.lordicon.com/jtisedbx.json"
+                                                        trigger="loop"
                                                         style="width:130px;height:130px">
                                                     </lord-icon>
                                                     <div class="mt-4 pt-4">
@@ -241,22 +229,22 @@
                                         <tr>
                                             <td data-sort="">{{ $val++ }}</td>
                                             <td data-sort="">{{ html_entity_decode($users->name) }}</td>
-                                            <td data-sort=""> <b>{{ html_entity_decode($$users->$email) }}</b>
+                                            <td data-sort=""> <b>{{ html_entity_decode($users->email) }}</b>
                                             </td>
                                             <td data-sort=""><small>{{ html_entity_decode($users->type) }}</small>
                                             </td>
                                             <td data-sort=""></strong>{{ html_entity_decode($users->status) }}
                                             </td>
                                             <td data-sort=""><small class="badge badge-soft-primary">
-                                                {{ html_entity_decode($users->ceated_at) }}</small> </td>
+                                                {{ html_entity_decode($users->created_at) }}</small> </td>
                                             <td data-sort="">
-                                                <a href="{{ route('updateUser') }}" type="button" class="btn btn-outline-secondary waves-effect waves-light">Modifier</a>
+                                                <a href="{{route('updateUser',$users->id)}}" type="button" class="btn btn-outline-secondary waves-effect waves-light">Modifier</a>
                                                 @if ($users->status == 0)
                                                 <a type="button" class="btn btn-outline-dark waves-effect waves-light" onclick="activateOrdesactivate()"> Activer</a>  
                                                 @else
                                                 <a type="button" class="btn btn-outline-dark waves-effect waves-light" onclick="activateOrdesactivate()">Désactiver</a>  
                                                 @endif
-                                                <a type="button" class="btn btn-outline-danger waves-effect waves-light" onclick="Delete()">Supprimer</a>
+                                                <a type="button" class="btn btn-outline-danger waves-effect waves-light" onclick="Delete(1)">Supprimer</a>
                                             </td>
                                         </tr>
                                     @empty
@@ -267,9 +255,6 @@
                                     @endforelse
                                 </tbody>
                             </table>
-                            {{-- <div class="pagination-container">
-                                {{ $depense->links('pagination::bootstrap-4') }}
-                            </div> --}}
                         </div>
                     </div>
                 </div>
