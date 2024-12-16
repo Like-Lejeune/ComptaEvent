@@ -163,12 +163,17 @@
                     <div id="two-column-menu">
                     </div>
                     <ul class="navbar-nav" id="navbar-nav">
-                        <li class="menu-title"><span data-key="t-menu">Menu</span></li>
                         <li class="nav-item">
                             <a class="nav-link menu-link" href="{{ route('administrator') }}">
                                 <i class="mdi mdi-speedometer"></i> <span data-key="t-dashboards" style="font-size:12px;">Accueil</span>
                             </a>
-                        </li> <!-- end Dashboard Menu -->
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link menu-link" href="{{ route('userlist') }}">
+                                <i class="mdi mdi-speedometer"></i> <span data-key="t-dashboards" style="font-size:12px;">Utilisateur</span>
+                            </a>
+                        </li> <!-- end Dashboard Menu --> 
+                        <!-- end Dashboard Menu -->
                         
                         
                         <li class="nav-item">
