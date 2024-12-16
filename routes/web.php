@@ -5,6 +5,7 @@ use App\Http\Controllers\Menu;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\client\projet_Controller;
 use App\Http\Controllers\Transactions\PaymentController as paiement; 
+use App\Http\Controllers\admin\user_serviceController as user_service; 
 use App\Http\Controllers\logController  as logs;
 use App\Http\Controllers\serviceController  as service;
 use App\Http\Controllers\depenseController  as depense;
@@ -54,6 +55,19 @@ Route::middleware(['auth'])->group(function () {
     Route::get('etat_global_pdf', [pdf::class, 'etat_global_pdf'])->name('etat_global_pdf');
 
 
+   
+
+    //////////////////////   Users service   //////////////////////
+
+
+    Route::post('nouvelUser', [user_service::class, 'nouvelUser'])->name('nouvelUser');
+    Route::post('updateUser', [user_service::class, 'updateUser'])->name('updateUser');
+    Route::post('destroyUser', [user_service::class, 'destroyUser'])->name('destroyUser');
+    Route::post('ActivateOrdesactivateUser', [user_service::class, 'ActivateOrdesactivateUser'])->name('ActivateOrdesactivateUser');
+    
+    Route::get('userlist',[user_service::class, 'userlist'])->name('userlist');
+    Route::get('updateUser_/{id}', [user_service::class, 'updateUser_'])->name('updateUser_');
+    Route::get('formUser', [user_service::class, 'formUser'])->name('formUser');
 
     ///////////////////////////////////////////////////////////////////
 
