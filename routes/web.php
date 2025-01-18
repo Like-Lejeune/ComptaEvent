@@ -10,6 +10,7 @@ use App\Http\Controllers\logController  as logs;
 use App\Http\Controllers\serviceController  as service;
 use App\Http\Controllers\depenseController  as depense;
 use App\Http\Controllers\pdfController  as pdf;
+use App\Http\Controllers\ProfileController;
 
 //use Mail;
 /*
@@ -39,6 +40,10 @@ Route::get('reset_password', [connexion::class, 'reset_password'])->name('reset_
 
 
 Route::middleware(['auth'])->group(function () {
+   
+
+    Route::resource('profiles', ProfileController::class);
+   
     Route::get('administrator', [Menu::class, 'administrator'])->name('administrator');
     Route::get('nouvelleDepense', [depense::class, 'nouvelle_depense'])->name('nouvelleDepense');
     Route::get('DocsTelecharger/{depense_id}', [depense::class, 'DocsTelecharger'])->name('DocsTelecharger');

@@ -24,6 +24,7 @@ class User extends Authenticatable
         'matricule',
         'type',
         'status',
+        'profil_id',
     ];
 
     /**

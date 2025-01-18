@@ -10,6 +10,7 @@ use App\Models\User;
 use App\Http\Controllers\Tools;
 use Illuminate\Database\QueryException;
 use App\Models\Service;
+use App\Models\Profile;
 
 class user_serviceController extends Controller
 {
@@ -44,9 +45,11 @@ class user_serviceController extends Controller
         //
 
         try {
-            //$service = DB::table('services')
+
+            $profiles = Profile::all();
             $service = service::orderby('s_name', 'ASC')->get();
-            return view('admin.formulaireUsers')->with('services',$service);
+            return view('admin.formulaireUsers')->with('services',$service)->with('profiles',$profiles);
+        
 
         } catch (QueryException $e) {
 
@@ -56,61 +59,72 @@ class user_serviceController extends Controller
     
     // Create User -- Type User //
 
-    public function nouvelUser(Request $request)
-    {
-      try {
+  public function nouvelUser(Request $request)
+{
+    try {
         $validator = Validator::make($request->all(), [
-  
-            'name' => 'required',
-            'email' => 'required|email',
+            'name' => 'required|string|max:255',
+            'email' => 'required|email|unique:users,email',
+            'password' => 'nullable|string|min:8',
+            'profil_id'=>'required',
+            'service_id'=>'required',
+            'type' => 'nullable|in:super,admin,user',
+            'phone' => 'nullable|string|max:20',
+            'status' => 'nullable|in:0,1',
         ]);
+
         if ($validator->fails()) {
-    
-            return response()->json(['message' => 'Veuillez corriger les erreurs suivantes :', 'errors' => $validator->errors()], 400);
+            return response()->json([
+                'message' => 'Veuillez corriger les erreurs suivantes :',
+                'errors' => $validator->errors()
+            ], 400);
+        }
 
-        } else {
-                if ($request->input('password') !== null && $request->input('password') !== '') {
-                    $password = $this->tools->krypt($this->tools->controle_space($request->input('password')));
-                } else {
-                    $password = $this->tools->krypt('Compta2024');
-                }
-                if ($request->input('type') !== null && $request->input('type') !== '') {
-                    $type = $this->tools->$request->input('type');
-                } else {
-                    $type = 'user';
-                }
-          
-            $nb = DB::table('users')->count();
-            $nb++;
-            $nb = $nb++;
-            $user = new user();
-            $user->name =  $this->tools->controle_space($request->input('name'));
-            $user->email = $this->tools->controle_space($request->input('email'));
-            $user->type = $type;
-            $user->password  = $password;
-            $user->save();
-            $lastInsertedId = $user->id;
+        // Définir les valeurs par défaut si nécessaire
+        $password = $request->input('password') 
+            ? $this->tools->krypt($this->tools->controle_space($request->input('password'))) 
+            : $this->tools->krypt('Compta2024');
 
-            if ($request->has('service')) {
-                foreach ($request->input('service') as $choice) {
-                    DB::table('user_service')->insert(
-                        [
-                            'service_id' => $choice,
-                            'user_id' => $lastInsertedId
-                        ]
-                    );
-                }
+        $type = $request->input('type') ?? 'user';
+        $phone = $request->input('phone') ?? '';
+        $status = $request->input('status') ?? '0';
+
+        // Génération automatique du matricule
+        $prefix = 'MA'; // Préfixe pour le matricule
+        $year = substr(date('Y'), -2); // Année courante
+        $uniqueId = str_pad(User::max('id') + 1, 3, '0', STR_PAD_LEFT); // ID incrémenté avec 3 chiffres
+        $matricule = "{$prefix}-{$year}-{$uniqueId}";
+
+        // Création de l'utilisateur
+        $user = new User();
+        $user->name = $this->tools->controle_space($request->input('name'));
+        $user->email = $this->tools->controle_space($request->input('email'));
+        $user->password = $password;
+        $user->type = $type;
+        $user->phone = $phone;
+        $user->status = $status;
+        $user->matricule = $matricule;
+        $user->save();
+
+        // Insertion des services associés (si fournis)
+        if ($request->has('service')) {
+            foreach ($request->input('service') as $choice) {
+                DB::table('user_service')->insert([
+                    'service_id' => $choice,
+                    'user_id' => $user->id
+                ]);
             }
         }
+
         return redirect()->back()
-          ->with('success', 'You have successfully add user.');
-
-        } catch (QueryException $e) {
-
-            return response()->json($e->getMessage());
-        }
-      
+            ->with('success', 'Utilisateur ajouté avec succès.');
+    } catch (QueryException $e) {
+        return response()->json([
+            'message' => 'Une erreur est survenue lors de la création de l’utilisateur.',
+            'error' => $e->getMessage()
+        ], 500);
     }
+}
 
     public function updateUser(Request $request, string $id)
     {
@@ -127,6 +141,7 @@ class user_serviceController extends Controller
                     ->update(array(
                         'name' => $request->input('name') !== null ? $this->tools->controle_space($request->input('name')) : $user->name,
                         'email' => $request->input('email') !== null ? $this->tools->controle_space($request->input('email')) : $user->email,
+                        'phone' => $request->input('phone') !== null ? $this->tools->controle_space($request->input('phone')) : $user->email,
                         'password' => $this->tools->krypt($request->input('password')) !== null ? $this->tools->krypt($this->tools->controle_space($request->input('password'))) : $user->password,
                         'type' => $request->input('type') !== null ? $this->tools->controle_space($request->input('type')) : $user->type,
                         'updated_at' => $this->tools->HeureLocale(),

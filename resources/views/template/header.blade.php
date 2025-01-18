@@ -55,7 +55,61 @@
                 opacity: 1;
             }
         }
+        .profile-offcanvas .team-cover::before,
+        .team-box .team-cover::before {
+            content: "";
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background: -webkit-gradient(linear, left bottom, left top, from(#221a52), to(#4b38b3));
+            background: linear-gradient(to top, #ffffff00, #ffffff00);
+            opacity: .6;
+    
+    
+        }
+    
+        .btn-light:hover {
+            background-color: rgb(221, 71, 71);
+            color: white;
+            border-color: #f3f6f9;
+        }
+    
+        .sup:hover {
+            background-color: rgb(221, 71, 71);
+            color: white;
+            border-color: #f3f6f9;
+        }
+    
+        .P1 {
+    
+            border-width: 1px;
+            border-style: solid;
+            border-color: rgb(255, 255, 255);
+        }
+    
+        .P2 {
+            border-width: 1px;
+            border-style: solid;
+            border-color: rgb(255, 255, 255);
+    
+        }
+    
+        .P3 {
+    
+            border-width: 1px;
+            border-style: solid;
+            border-color: rgb(255, 255, 255);
+        }
+    
+        .P4 {
+            border-width: 1px;
+            border-style: solid;
+            border-color: rgb(255, 255, 255);
+    
+        }
+    
     </style>
+    
 </head>
 
 <body>
@@ -172,7 +226,14 @@
                             <a class="nav-link menu-link" href="{{ route('userlist') }}">
                                 <i class="mdi mdi-speedometer"></i> <span data-key="t-dashboards" style="font-size:12px;">Utilisateur</span>
                             </a>
-                        </li> <!-- end Dashboard Menu --> 
+                        </li> 
+                        <li class="nav-item">
+                            <a class="nav-link menu-link" href="{{ route('profiles.index') }}">
+                                <i class="mdi mdi-speedometer"></i> <span data-key="t-dashboards" style="font-size:12px;">Profils</span>
+                            </a>
+                        </li> 
+                        
+                        <!-- end Dashboard Menu --> 
                         <!-- end Dashboard Menu -->
                         
                         

@@ -42,7 +42,6 @@ class connexion extends Controller
         $validator = Validator::make($request->all(), [
  
             'name' => 'required|min:4',
-            'password' => 'required|confirmed|min:6',
             'email' => 'required|email|unique:users',
           ]);
           if ($validator->fails()) {
