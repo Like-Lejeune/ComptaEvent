@@ -1,7 +1,7 @@
 <?php
 
 namespace App\Http\Controllers;
-
+use Illuminate\Support\Facades\DB;
 use App\Models\Service;
 use App\Models\Project;
 use App\Models\Work;
@@ -27,9 +27,12 @@ class Menu extends Controller
         return view('admin.Menu');
     }
     public function user_menu()
-    {
-        $service = service::get();
-        return view('user.Menu')->with('service',  $service);
+    { 
+        $service = DB::table('services')
+                ->join('user_service', 'id_service', '=', 'service_id')
+                ->where('user_id', auth()->User()->id)
+                ->get();
+        return view('users.Menu')->with('services',  $service);
     }
 
 }
