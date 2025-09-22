@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Service;
 use Illuminate\Support\Facades\DB;
-use \Yajra\Datatables\Datatables;
 use App\Http\Controllers\Tools;
 use Illuminate\Support\Facades\Validator;
 
@@ -17,6 +16,13 @@ class serviceController extends Controller
     public function __construct(Tools $tools)
     {
         $this->tools = $tools;
+    }
+
+
+   public function index()
+    {
+        $services = Service::all();
+        return view('admin.services', compact('services'));
     }
 
     public function nouveauService(Request $request)
@@ -80,7 +86,7 @@ class serviceController extends Controller
 
         'budget' => 'required',
         'service' => 'required',
-       
+
     ]);
     if ($validator->fails()) {
 
@@ -96,7 +102,7 @@ class serviceController extends Controller
                 's_budget' => $this->tools->controle_space($request->input('budget')),
                 's_solde' => $this->tools->controle_space($request->input('budget'))- $total_depense,
             ));
- 
+
             return redirect()->back()->with('success', 'Modification du budget réussie.');
     }
   }

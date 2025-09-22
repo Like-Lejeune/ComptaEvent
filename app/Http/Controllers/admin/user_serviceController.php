@@ -49,14 +49,14 @@ class user_serviceController extends Controller
             $profiles = Profile::all();
             $service = service::orderby('s_name', 'ASC')->get();
             return view('admin.formulaireUsers')->with('services',$service)->with('profiles',$profiles);
-        
+
 
         } catch (QueryException $e) {
 
             return response()->json($e->getMessage());
         }
     }
-    
+
     // Create User -- Type User //
 
   public function nouvelUser(Request $request)
@@ -81,8 +81,8 @@ class user_serviceController extends Controller
         }
 
         // Définir les valeurs par défaut si nécessaire
-        $password = $request->input('password') 
-            ? $this->tools->krypt($this->tools->controle_space($request->input('password'))) 
+        $password = $request->input('password')
+            ? $this->tools->krypt($this->tools->controle_space($request->input('password')))
             : $this->tools->krypt('Compta2024');
 
         $type = $request->input('type') ?? 'user';
@@ -150,18 +150,18 @@ class user_serviceController extends Controller
 
             if ($request->has('service')) {
                 $newChoices = $request->input('service'); // Les nouveaux choix sélectionnés
-    
+
                 $existingChoices = DB::table('user_service')
                     ->where('user_id', $id)
                     ->pluck('service_id') // Récupère uniquement les valeurs de 'service_id'
                     ->toArray();
-            
+
                 // Identifier les choix à ajouter
                 $choicesToAdd = array_diff($newChoices, $existingChoices);
-            
+
                 // Identifier les choix à supprimer
                 $choicesToDelete = array_diff($existingChoices, $newChoices);
-            
+
                 // Ajouter les nouveaux choix
                 foreach ($choicesToAdd as $choice) {
                     DB::table('user_service')->insert([
@@ -169,7 +169,7 @@ class user_serviceController extends Controller
                         'user_id' => $id,
                     ]);
                 }
-            
+
                 // Supprimer les choix qui ne sont plus sélectionnés
                 if (!empty($choicesToDelete)) {
                     DB::table('user_service')
@@ -178,7 +178,7 @@ class user_serviceController extends Controller
                         ->delete();
                 }
             }
-            
+
             return redirect()->back()->with('success', 'You have successfully update user.');
 
         } catch (QueryException $e) {
@@ -194,7 +194,7 @@ class user_serviceController extends Controller
             $user = DB::table('users')
                 ->where('id', $id)
                 ->first();
-            if ($user) { 
+            if ($user) {
                 $user = DB::table('users')
                     ->where('id', $id)
                     ->delete();
@@ -260,7 +260,7 @@ class user_serviceController extends Controller
 
                     $user->roles = $roles;
                     $user->role_id = $idRole;
-           
+
             if ($user) {
                 return response()->json($user);
             }

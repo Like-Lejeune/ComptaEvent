@@ -9,12 +9,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <meta content="Premium Multipurpose Admin & Dashboard Template" name="description" />
-    
+
     <meta content="Themesbrand" name="author" />
     <!-- App favicon -->
     <link rel="shortcut icon" href="{{ url('template_photoQuix/logo/logo-mini.png') }}">
 
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css" rel="stylesheet"> 
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css" rel="stylesheet">
 
     <!-- jsvectormap css -->
     <link href="{{ url('control/libs/jsvectormap/css/jsvectormap.min.css') }}" rel="stylesheet" type="text/css" />
@@ -64,52 +64,52 @@
             background: -webkit-gradient(linear, left bottom, left top, from(#221a52), to(#4b38b3));
             background: linear-gradient(to top, #ffffff00, #ffffff00);
             opacity: .6;
-    
-    
+
+
         }
-    
+
         .btn-light:hover {
             background-color: rgb(221, 71, 71);
             color: white;
             border-color: #f3f6f9;
         }
-    
+
         .sup:hover {
             background-color: rgb(221, 71, 71);
             color: white;
             border-color: #f3f6f9;
         }
-    
+
         .P1 {
-    
+
             border-width: 1px;
             border-style: solid;
             border-color: rgb(255, 255, 255);
         }
-    
+
         .P2 {
             border-width: 1px;
             border-style: solid;
             border-color: rgb(255, 255, 255);
-    
+
         }
-    
+
         .P3 {
-    
+
             border-width: 1px;
             border-style: solid;
             border-color: rgb(255, 255, 255);
         }
-    
+
         .P4 {
             border-width: 1px;
             border-style: solid;
             border-color: rgb(255, 255, 255);
-    
+
         }
-    
+
     </style>
-    
+
 </head>
 
 <body>
@@ -163,7 +163,7 @@
                     </button>
                 </div>
 
-                
+
                 <div class="dropdown ms-sm-3 header-item topbar-user" >
                     <button type="button" class="btn shadow-none" id="page-header-user-dropdown" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                         <span class="d-flex align-items-center">
@@ -176,7 +176,7 @@
                     <div class="dropdown-menu dropdown-menu-end">
                         <!-- item-->
                         <h6 class="dropdown-header">{{auth()->User()->name}}</h6>
-                     
+
                         <a class="dropdown-item" href="{{ route('deconnexion') }}"><i class="mdi mdi-logout text-muted fs-16 align-middle me-1"></i> <span class="align-middle" data-key="t-logout">Se deconnecter</span></a>
                     </div>
                 </div>
@@ -191,19 +191,19 @@
                 <!-- Dark Logo-->
                 <a href="{{ route('administrator') }}" class="logo logo-dark">
                     <span class="logo-sm">
-                        <img src="{{ url('control/images/nft/mtw_nic.pn')}}" class="card-logo card-logo-dark" alt="logo dark" height="65">
+                        <img src="{{ url('control/images/nft/mtw_nic.png')}}" class="card-logo card-logo-dark" alt="logo dark" height="65">
                     </span>
                     <span class="logo-lg">
-                        <img src="{{ url('control/images/nft/mtw_nic.pn')}}" class="card-logo card-logo-dark" alt="logo dark" height="65">
+                        <img src="{{ url('control/images/nft/mtw_nic.png')}}" class="card-logo card-logo-dark" alt="logo dark" height="65">
                     </span>
                 </a>
                 <!-- Light Logo-->
                 <a href="{{ route('administrator') }}" class="logo logo-light">
                     <span class="logo-sm">
-                        <img src="{{ url('control/images/nft/mtwlogo_ligh.pn')}}" class="card-logo card-logo-light" alt="logo light" height="65">
+                        <img src="{{ url('control/images/nft/mtwlogo_ligh.png')}}" class="card-logo card-logo-light" alt="logo light" height="65">
                     </span>
                     <span class="logo-lg">
-                        <img src="{{ url('control/images/nft/mtwlogo_ligh.pn')}}" class="card-logo card-logo-light" alt="logo light" height="65">
+                        <img src="{{ url('control/images/nft/mtwlogo_ligh.png')}}" class="card-logo card-logo-light" alt="logo light" height="65">
                     </span>
                 </a>
                 <button type="button" class="btn btn-sm p-0 fs-20 header-item float-end btn-vertical-sm-hover" id="vertical-hover">
@@ -226,17 +226,17 @@
                             <a class="nav-link menu-link" href="{{ route('userlist') }}">
                                 <i class="mdi mdi-speedometer"></i> <span data-key="t-dashboards" style="font-size:12px;">Utilisateur</span>
                             </a>
-                        </li> 
+                        </li>
                         <li class="nav-item">
                             <a class="nav-link menu-link" href="{{ route('profiles.index') }}">
                                 <i class="mdi mdi-speedometer"></i> <span data-key="t-dashboards" style="font-size:12px;">Profils</span>
                             </a>
-                        </li> 
-                        
-                        <!-- end Dashboard Menu --> 
+                        </li>
+
                         <!-- end Dashboard Menu -->
-                        
-                        
+                        <!-- end Dashboard Menu -->
+
+
                         <li class="nav-item">
                             <a class="nav-link menu-link" href="#sidebarDashboards" data-bs-toggle="collapse" role="button" aria-expanded="false" aria-controls="sidebarDashboards">
                                 <i class="ri-user-star-fill"></i> <span data-key="t-dashboards" style="font-size:12px;"></span>
@@ -247,27 +247,27 @@
                                         <a class="nav-link menu-link" href="{{ route('log_super') }}" >
                                         <i class="ri-dashboard-fill"></i> <span data-key="t-dashboards" style="font-size:12px;">Actions</span>
                                         </a>
-                                    </li>  
+                                    </li>
                                 </ul>
                             </div>
-                        </li> 
+                        </li>
                        @if ( auth()->User()->type =='super')
-                         
+
                         <li class="nav-item">
-                            <a class="nav-link menu-link" href="" >
+                            <a class="nav-link menu-link" href="{{ route('afficherService') }}" >
                             <i class="ri-dashboard-fill"></i> <span data-key="t-dashboards" style="font-size:12px;">Services</span>
                             </a>
-                        </li>   
+                        </li>
                         <li class="nav-item">
                             <a class="nav-link menu-link" href="" >
                             <i class="ri-dashboard-fill"></i> <span data-key="t-dashboards" style="font-size:12px;">Activité</span>
                             </a>
-                        </li>           
+                        </li>
                        @endif
-                      
-                        
+
+
                        <!-- end Dashboard Menu -->
-                        
+
                     </ul>
                 </div>
                 <!-- Sidebar -->

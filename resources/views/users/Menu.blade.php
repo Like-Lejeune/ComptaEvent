@@ -23,7 +23,7 @@
         {{-- @php
        $services = DB::table('services')
               ->orderBy('s_name', 'asc')     // Puis par nom au sein de chaque catégorie
-              ->get();    
+              ->get();
         @endphp --}}
 
         {{-- Modal service --}}
@@ -37,39 +37,6 @@
                             <button type="button" class="btn-close" data-bs-dismiss="modal"
                                 aria-label="Close" id="close-modal"></button>
                         </div>
-                        <form id="admin" action="{{route('nouveauService')}}" method="POST"
-                            enctype="multipart/form-data">
-                            @csrf
-                            <div class="modal-body">
-
-                                <ul class='alert alert warning d-one' id='save_errorList'></ul>
-                                <div class="row">
-                                    <div class="mb-" id="modal-id" style="display: none;">
-                                        <label for="id-field" class="form-label">ID</label>
-
-                                    </div>
-                                    <div class="col-lg-12 mb-3">
-                                        <label for="placeholderInput" class="form-label"> <b style="font-size: 16px">
-                                            Nouveau service</label>
-                                            <input type="texte" class="form-control" name="s_service" placeholder="Ex: Sonorisation">   
-                                    </div><br>
-                                    <div class="col-lg-12 mb-3">
-                                        <label for="placeholderInput" class="form-label"> <b style="font-size: 16px">
-                                            Budget du service</label>
-                                            <input type="number" class="form-control" name="s_budget" placeholder="Ex: 5000000 XAF">   
-                                    </div><br>
-
-                                </div>
-                            </div>
-                            <div class="modal-footer">
-                                <div class="hstack gap-2 justify-content-end">
-                                    <button type="button" class="btn btn-light"
-                                        data-bs-dismiss="modal">Fermer</button>
-                                    <button type="submit" id="btnSave"
-                                        class="btn btn-secondary">Enregistrer</button>
-                                </div>
-                            </div>
-                        </form>
                     </div>
                 </div>
             </div>
@@ -86,50 +53,6 @@
                         <button type="button" class="btn-close" data-bs-dismiss="modal"
                             aria-label="Close" id="close-modal"></button>
                     </div>
-                    <form id="admin_" action="{{route('updateBudget')}}" method="POST"
-                        enctype="multipart/form-data">
-                        @csrf
-                        <div class="modal-body">
-
-                            <ul class='alert alert warning d-one' id='save_errorList'></ul>
-                            <div class="row">
-                                <div class="mb-" id="modal-id" style="display: none;">
-                                    <label for="id-field" class="form-label">ID</label>
-
-                                </div>
-                                <div class="col-lg-12 mb-3">
-                                    <label for="customername-field" class="form-label"
-                                        style="font-size: 16px">Choississez le service
-                                    </label>
-                                    <select class="form-select" name="service"
-                                        aria-label="Disabled select example"
-                                        style="font-size: 18
-                                        16px"  required>
-                                        {{-- @foreach ($services as $item)
-                                                <option value="{{ $item->id_service }}">
-                                                    {{ $item->s_name }}</option>
-                                        @endforeach --}}
-
-                                    </select>
-                                   
-                                </div>
-                                <div class="col-lg-12 mb-3">
-                                    <label for="placeholderInput" class="form-label"> <b style="font-size: 16px">
-                                        Nouveau Budget</label>
-                                        <input type="number" class="form-control" name="budget" placeholder="Ex: 5000000 XAF">   
-                                </div><br>
-
-                            </div>
-                        </div>
-                        <div class="modal-footer">
-                            <div class="hstack gap-2 justify-content-end">
-                                <button type="button" class="btn btn-light"
-                                    data-bs-dismiss="modal">Fermer</button>
-                                <button type="submit" id="btnSave"
-                                    class="btn btn-secondary">Enregistrer</button>
-                            </div>
-                        </div>
-                    </form>
                 </div>
             </div>
         </div>
@@ -138,7 +61,6 @@
         <div class="row project-wrapper">
             <div class="col-xxl-8">
                 <div class="row">
-                   
                      @foreach ($services as $service)
                      <div class="col">
                          <div class="card explore-box card-animate rounded">
@@ -156,11 +78,11 @@
                              ->where('service_id', '=', $service->id_service)
                              ->where('user_id', auth()->User()->id)
                              ->sum('s_depense');
-                             
- 
+
+
                              $conso=($sumdep*100)/$service->s_budget
                             @endphp
-                           
+
                              <div class="card-footer border-top border-top-dashed">
                                 <a type="button" href="{{ route('historique_depense', $service->id_service) }}">
                                  <div class="d-flex align-items-center">
@@ -171,13 +93,13 @@
                                              <div class="progress mt-2" style="height: 10px;">
                                                  <div class="progress-bar progress-bar-striped progress-bar-animated bg-danger" role="progressbar" style="width:{{number_format($conso, 2)}}%" aria-valuenow="75" aria-valuemin="0" aria-valuemax="75"></div>
                                              </div>
-                                
+
                                           <p class="mb-1">Pourcentage : {{number_format($conso, 2)}} %</p>
                                      </div>
                                  </div>
                                 </a>
                              </div>
-                            
+
                          </div>
                          <!--end card-->
                  </div>
@@ -265,7 +187,7 @@
                     </div><!-- end col -->
                 </div><!-- end row -->
             </div><!-- end col -->
- 
+
             <div class="col-xxl-4">
                 <div class="card">
                     <div class="card-header border-0">

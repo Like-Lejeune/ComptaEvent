@@ -4,8 +4,8 @@ use App\Http\Controllers\connexion;
 use App\Http\Controllers\Menu;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\client\projet_Controller;
-use App\Http\Controllers\Transactions\PaymentController as paiement; 
-use App\Http\Controllers\admin\user_serviceController as user_service; 
+use App\Http\Controllers\Transactions\PaymentController as paiement;
+use App\Http\Controllers\admin\user_serviceController as user_service;
 use App\Http\Controllers\logController  as logs;
 use App\Http\Controllers\serviceController  as service;
 use App\Http\Controllers\depenseController  as depense;
@@ -40,10 +40,10 @@ Route::get('reset_password', [connexion::class, 'reset_password'])->name('reset_
 
 
 Route::middleware(['auth'])->group(function () {
-   
+
 
     Route::resource('profiles', ProfileController::class);
-   
+
     Route::get('administrator', [Menu::class, 'administrator'])->name('administrator');
     Route::get('nouvelleDepense', [depense::class, 'nouvelle_depense'])->name('nouvelleDepense');
     Route::get('DocsTelecharger/{depense_id}', [depense::class, 'DocsTelecharger'])->name('DocsTelecharger');
@@ -53,6 +53,7 @@ Route::middleware(['auth'])->group(function () {
     Route::post('submit_depense', [depense::class, 'submit_depense'])->name('submit_depense');
 
     Route::post('nouveauService', [service::class, 'nouveauService'])->name('nouveauService');
+    Route::get('afficherService', [service::class, 'index'])->name('afficherService');
     Route::post('updateBudget', [service::class, 'updateBudget'])->name('updateBudget');
 
 
@@ -60,7 +61,7 @@ Route::middleware(['auth'])->group(function () {
     Route::get('etat_global_pdf', [pdf::class, 'etat_global_pdf'])->name('etat_global_pdf');
 
 
-   
+
 
     //////////////////////   Users service   //////////////////////
 
@@ -69,7 +70,7 @@ Route::middleware(['auth'])->group(function () {
     Route::post('updateUser', [user_service::class, 'updateUser'])->name('updateUser');
     Route::post('destroyUser', [user_service::class, 'destroyUser'])->name('destroyUser');
     Route::post('ActivateOrdesactivateUser', [user_service::class, 'ActivateOrdesactivateUser'])->name('ActivateOrdesactivateUser');
-    
+
     Route::get('userlist',[user_service::class, 'userlist'])->name('userlist');
     Route::get('updateUser_/{id}', [user_service::class, 'updateUser_'])->name('updateUser_');
     Route::get('formUser', [user_service::class, 'formUser'])->name('formUser');
@@ -87,8 +88,8 @@ Route::middleware(['auth'])->group(function () {
     Route::get('encrypted_update_view_redation/{encryptedID}', [projet_Controller::class, 'update_view_redation'])->name('encrypted_update_view_redation');
     Route::get('form_paiement/{work_id}',[projet_Controller::class, 'encrypting_form_paiement'])->name('form_paiement');
     Route::get('encrypted_form_paiement/{encryptedID}', [projet_Controller::class, 'form_paiement'])->name('encrypted_form_paiement');
-    
-    
+
+
     ///////////////////////////////////////////////////////////////////
 
     ////////////////   Transaction   //////////////////////
