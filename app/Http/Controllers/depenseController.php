@@ -18,8 +18,19 @@ class depenseController extends Controller
     }
     public function nouvelle_depense()
     { 
+        $user = auth()->user();
+        
+       if ($user->type == "admin" || $user->type == "super") {
+            // Super admin : accès à tous les services
+            $services = DB::table('services')->get();
+        } else {
+        // Utilisateur normal : accès via pivot
         $services = DB::table('services')
-        ->get();   
+            ->join('user_service', 'id_service', '=', 'user_service.service_id')
+            ->where('user_service.user_id', $user->id)
+            ->select('services.*')
+            ->get();
+    }  
         return view('operations.depense')->with('service', $services);
     }
 

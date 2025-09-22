@@ -76,7 +76,6 @@
                              @php
                              $sumdep = DB::table('depense')
                              ->where('service_id', '=', $service->id_service)
-                             ->where('user_id', auth()->User()->id)
                              ->sum('s_depense');
 
 
@@ -102,7 +101,7 @@
 
                          </div>
                          <!--end card-->
-                 </div>
+                        </div>
                      @endforeach
                     <!-- end col -->
                 </div><!-- end row -->
@@ -151,7 +150,7 @@
                                     <!--end col-->
                                     @php
                                      $sumPrix = DB::table('depense')
-                                        //->where('user_id', auth()->User()->id)
+                                        ->join('user_service', 'user_service.service_id', '=', 'depense.service_id')
                                     ->sum('s_depense');
                                     @endphp
                                     <div class="col-6 col-sm-3">
@@ -164,6 +163,7 @@
                                     <!--end col-->
                                     @php
                                      $sumPrix = DB::table('services')
+                                      ->join('user_service', 'id_service', '=', 'service_id')
                                     ->sum('s_solde');
                                     @endphp
                                     <div class="col-6 col-sm-3">

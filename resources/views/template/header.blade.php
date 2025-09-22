@@ -125,19 +125,19 @@
                 <div class="navbar-brand-box horizontal-logo">
                     <a href="index.html" class="logo logo-dark">
                         <span class="logo-sm">
-                            <img src="{{ url('control/images/nft/mtw_nice.pn')}}" alt="" height="65">
+                            <img src="{{ url('control/images/nft/mtw_nice.png')}}" alt="" height="65">
                         </span>
                         <span class="logo-lg">
-                            <img src="{{ url('control/images/nft/mtw_nice.pn')}}" alt="" height="65">
+                            <img src="{{ url('control/images/nft/mtw_nice.png')}}" alt="" height="65">
                         </span>
                     </a>
 
                     <a href="index.html" class="logo logo-light">
                         <span class="logo-sm">
-                            <img src="{{ url('control/images/nft/mtwlogo_light.pn')}}" alt="" height="65">
+                            <img src="{{ url('control/images/nft/mtwlogo_light.png')}}" alt="" height="65">
                         </span>
                         <span class="logo-lg">
-                            <img src="{{ url('control/images/nft/mtwlogo_light.pn')}}" alt="" height="65">
+                            <img src="{{ url('control/images/nft/mtwlogo_light.png')}}" alt="" height="65">
                         </span>
                     </a>
                 </div>
@@ -217,6 +217,7 @@
                     <div id="two-column-menu">
                     </div>
                     <ul class="navbar-nav" id="navbar-nav">
+                        @if (auth()->User()->type =='super')
                         <li class="nav-item">
                             <a class="nav-link menu-link" href="{{ route('administrator') }}">
                                 <i class="mdi mdi-speedometer"></i> <span data-key="t-dashboards" style="font-size:12px;">Accueil</span>
@@ -232,6 +233,12 @@
                                 <i class="mdi mdi-speedometer"></i> <span data-key="t-dashboards" style="font-size:12px;">Profils</span>
                             </a>
                         </li>
+                        @else
+                            <a class="nav-link menu-link" href="{{ route('user_menu') }}">
+                                <i class="mdi mdi-speedometer"></i> <span data-key="t-dashboards" style="font-size:12px;">Accueil</span>
+                            </a>
+                        @endif
+                       
 
                         <!-- end Dashboard Menu -->
                         <!-- end Dashboard Menu -->
