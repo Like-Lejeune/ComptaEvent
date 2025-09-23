@@ -253,8 +253,8 @@
                                             <td data-sort="">
                                                     <a type="button" target="_blank" class="btn btn-soft-dark"
                                                         href="{{ route('etat_service_pdf', $service->service_id) }}">imprimer </a>
-                                               
-
+                                                    <a type="button" target="_blank" class="btn btn-soft-danger"
+                                                        href="{{ route('edit_depense', $depense->id_depense) }}">Modifier </a>
                                             </td>
                                         </tr>
                                     @empty

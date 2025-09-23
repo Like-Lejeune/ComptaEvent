@@ -55,7 +55,8 @@ Route::middleware(['auth'])->group(function () {
     Route::post('nouveauService', [service::class, 'nouveauService'])->name('nouveauService');
     Route::get('afficherService', [service::class, 'index'])->name('afficherService');
     Route::post('updateBudget', [service::class, 'updateBudget'])->name('updateBudget');
-
+    Route::get('edit_depense/{service_id}', [depense::class, 'edit_depense'])->name('edit_depense');
+    Route::put('update_depense', [depense::class, 'update_depense'])->name('update_depense');
 
     Route::get('etat_service_pdf/{service_id}', [pdf::class, 'etat_service_pdf'])->name('etat_service_pdf');
     Route::get('etat_global_pdf', [pdf::class, 'etat_global_pdf'])->name('etat_global_pdf');
@@ -75,37 +76,7 @@ Route::middleware(['auth'])->group(function () {
     Route::get('updateUser_/{id}', [user_service::class, 'updateUser_'])->name('updateUser_');
     Route::get('formUser', [user_service::class, 'formUser'])->name('formUser');
 
-    ///////////////////////////////////////////////////////////////////
-
-    //////////////////////   administration   //////////////////////
-
-    ///////////////////////////////////////////////////////////////////
-
-    Route::post('paid_om_momo', [projet_Controller::class, 'paid_om_momo'])->name('paid_om_momo');
-    Route::post('redaction_soumission', [projet_Controller::class, 'redaction_soumission'])->name('redaction_soumission');
-    Route::post('update_redaction', [projet_Controller::class, 'update_redaction'])->name('update_redaction');
-    Route::get('update_view_redation/{work_id}',[projet_Controller::class, 'encrypting_view_redaction'])->name('update_view_redation');
-    Route::get('encrypted_update_view_redation/{encryptedID}', [projet_Controller::class, 'update_view_redation'])->name('encrypted_update_view_redation');
-    Route::get('form_paiement/{work_id}',[projet_Controller::class, 'encrypting_form_paiement'])->name('form_paiement');
-    Route::get('encrypted_form_paiement/{encryptedID}', [projet_Controller::class, 'form_paiement'])->name('encrypted_form_paiement');
-
-
-    ///////////////////////////////////////////////////////////////////
-
-    ////////////////   Transaction   //////////////////////
-
-    ///////////////////////////////////////////////////////////////////
-
-    Route::controller(paiement::class)->group(function () {
-        Route::get('addCredit', 'addCredit')->name('addCredit');
-        Route::get('AddCreditAdmin/{Idclient}', 'AddCreditAdmin')->name('AddCreditAdmin');
-        Route::get('historique_transaction', 'historique_transaction')->name('historique_transaction');
-        Route::post('buyCredit', 'buyCredit')->name('buyCredit');
-        Route::post('paiementCompteMytaswork', 'paiementCompteMytaswork')->name('paiementCompteMytaswork');
-        Route::post('DeleteProjet', 'DeleteProjet')->name('DeleteProjet');
-        Route::post('SubmitCreditAdmin', 'SubmitCreditAdmin')->name('SubmitCreditAdmin');
-    });
-
+ 
 
      ///////////////////////////////////////////////////////////////////
 
