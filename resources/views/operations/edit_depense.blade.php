@@ -98,7 +98,7 @@
                                         <label class="form-label">
                                             <b style="font-size: 16px">Designation<b style="color: red;">*</b></b>
                                         </label>
-                                        <input type="hidden" name="id_depense">
+                                        <input type="hidden" name="id_depense" value = {{$depense->id_depense}} >
                                         <input type="text" class="form-control" name="designation" 
                                             value="{{ old('designation', $depense->d_name) }}" 
                                             placeholder="designation de la dépense">

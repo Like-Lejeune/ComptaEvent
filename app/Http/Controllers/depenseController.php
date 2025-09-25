@@ -90,16 +90,14 @@ class depenseController extends Controller
                 ));
 
                 if ($request->file('link_piece')) {
-                    foreach ($request->file('link_piece') as $key => $file) {
-                        $extension = $file->getClientOriginalExtension();
-                        $fileName = $request->work_id . time() . rand(1, 99999).'.'.$extension;
-                        $file->move('images/work_doc/'.$fileName);
-                        DB::table('piece_jointe')->insert(
-                            [
-                                'piece_name' => $fileName,
-                                'depense_id' => $depense
-                            ]
-                        );
+                foreach ($request->file('link_piece') as $file) {
+                    $fileName = $depense . '_' . $file->getClientOriginalName(); 
+                    $file->move('images/work_doc/', $fileName);
+
+                    DB::table('piece_jointe')->insert([
+                        'piece_name' => $fileName,
+                        'depense_id' => $depense
+                        ]);
                     }
                 }
             return redirect()->route('historique_depense', ['service_id' => $request->input('service_id')]);
@@ -147,7 +145,7 @@ class depenseController extends Controller
             'date_operation' => 'required',
             'link_piece'     => 'nullable',
         ]);
-
+        
         if ($validator->fails()) {
             return redirect()->back()->with('error', 'informations insuffisantes');
         }
@@ -182,16 +180,15 @@ class depenseController extends Controller
         // 🔄 Mise à jour des pièces jointes si upload
         if ($request->file('link_piece')) {
             foreach ($request->file('link_piece') as $file) {
-                $extension = $file->getClientOriginalExtension();
-                $fileName = $request->work_id . time() . rand(1, 99999).'.'.$extension;
-                $file->move('images/work_doc/'.$fileName);
+                    $fileName = $depense . '_' . $file->getClientOriginalName(); 
+                    $file->move('images/work_doc/', $fileName);
 
-                DB::table('piece_jointe')->insert([
-                    'piece_name' => $fileName,
-                    'depense_id' => $request->id_depense
-                ]);
-            }
-        }
+                    DB::table('piece_jointe')->insert([
+                        'piece_name' => $fileName,
+                        'depense_id' => $depense
+                        ]);
+                    }
+                }
 
         return redirect()->route('historique_depense', ['service_id' => $request->input('service_id')])
             ->with('success', 'Dépense mise à jour avec succès');

@@ -23,19 +23,12 @@
                             <div class="row">
                                 @forelse ($documents as $doc)
                                     <div class="col-3" title="telecharger">
-                                        <div class="flex-shrink-0 me-3">
-                                            <a href="{{ url('images/works_docs', $doc->piece_name)}}" download >
-                                                <div class="avatar-md">
-                                                    <div class="avatar-title bg-light text-secondary rounded fs-24">
-                                                        <i class="ri-folder-zip-line"></i>
-                                                    </div>
-                                                </div>
-                                             </a>
-                                        </div>
                                         <div class="flex-grow-1 overflow-hidden">
-                                            <br>
                                             <h5 class="fs-13 mb-1">
-                                                <a type="button" download  href="{{ url('images/works_docs',$doc->piece_name) }}"
+                                                 <a href="{{ asset('images/work_doc/'.$doc->piece_name) }}" target="_blank">
+                                                    📎 {{ $doc->piece_name }}
+                                                </a><br><br>
+                                                <a type="button" download  href="{{ asset('images/work_doc/'.$doc->piece_name) }}"
                                                     class="text-body text-truncate d-block">Télécharger</a>
                                             </h5>
                                         </div>
