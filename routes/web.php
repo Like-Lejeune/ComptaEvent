@@ -3,8 +3,6 @@
 use App\Http\Controllers\connexion;
 use App\Http\Controllers\Menu;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\client\projet_Controller;
-use App\Http\Controllers\Transactions\PaymentController as paiement;
 use App\Http\Controllers\admin\user_serviceController as user_service;
 use App\Http\Controllers\logController  as logs;
 use App\Http\Controllers\serviceController  as service;

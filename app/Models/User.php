@@ -46,4 +46,31 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
     ];
 
+     public function evenements()
+    {
+        return $this->hasMany(Evenement::class, 'utilisateur_id');
+    }
+
+     /**
+     * 🔗 Relation : un utilisateur appartient à un profil
+     */
+    public function profil()
+    {
+        return $this->belongsTo(Profile::class, 'profil_id');
+    }
+
+    public function abonnement() {
+    return $this->hasOne(Abonnement::class, 'utilisateur_id')->where('statut','actif');
+    }
+
+    public function hasFeature($feature) {
+        $plan = $this->abonnement?->plan;
+        if (!$plan) return false;
+
+        return match($feature) {
+            'export_pdf' => $plan->export_pdf,
+            'multi_users' => $plan->multi_users,
+            default => false,
+        };
+    }
 }

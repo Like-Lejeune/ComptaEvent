@@ -15,10 +15,16 @@ class Service extends Model
      * @var array<int, string>
      */
     protected $fillable = [
+        'evenement_id',
         's_name',
         's_description',
         's_photo',
         's_budget',
     ];
+
+     public function evenement()
+    {
+        return $this->belongsTo(Evenement::class, 'evenement_id');
+    }
 
 }
