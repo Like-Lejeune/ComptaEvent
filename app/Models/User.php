@@ -43,7 +43,7 @@ class User extends Authenticatable
      * @var array<string, string>
      */
     protected $casts = [
-        'email_verified_at' => 'datetime',
+        'email_verified_at' => 'datetime', 
     ];
 
      public function evenements()
@@ -63,7 +63,7 @@ class User extends Authenticatable
     return $this->hasOne(Abonnement::class, 'utilisateur_id')->where('statut','actif');
     }
 
-    public function hasFeature($feature) {
+    public function checkplan($feature) {
         $plan = $this->abonnement?->plan;
         if (!$plan) return false;
 

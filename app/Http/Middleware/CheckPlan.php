@@ -18,7 +18,7 @@ class CheckPlan
         }
 
         // Vérifier une feature spécifique
-        if ($feature && !$user->hasFeature($feature)) {
+        if ($feature && !$user->checkplan($feature)) {
             return response()->json([
                 'message' => "Fonctionnalité réservée au Premium."
             ], 403);
