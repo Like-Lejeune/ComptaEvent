@@ -20,4 +20,12 @@ class Profile extends Model
     protected $casts = [
         'list_action' => 'array',
     ];
+
+     /**
+     * 🔗 Relation : un profil peut avoir plusieurs utilisateurs
+     */
+    public function users()
+    {
+        return $this->hasMany(User::class, 'profil_id');
+    }
 }

@@ -1,6 +1,16 @@
 @include('template.header');
+<style>
 
+    @keyframes blink {
+    0% { opacity: 1; }
+    50% { opacity: 0.4; }
+    100% { opacity: 1; }
+    }
 
+    .progress-bar.bg-danger {
+    animation: blink 1s infinite;
+    }
+</style>
 <div class="page-content">
     <div class="container-fluid">
 
@@ -159,6 +169,16 @@
  
                              $conso=($sumdep*100)/$service->s_budget
                             @endphp
+                            @php
+                                $progress = number_format($conso, 2);
+                                if ($progress < 90) {
+                                    $color = 'bg-success'; // vert
+                                } elseif ($progress <= 100) {
+                                    $color = 'bg-warning'; // rouge
+                                } else {
+                                    $color = 'bg-danger'; // dépassement
+                                }
+                            @endphp
                            
                              <div class="card-footer border-top border-top-dashed">
                                 <a type="button" href="{{ route('historique_depense', $service->id_service) }}">
@@ -167,11 +187,24 @@
                                          <i class="ri-price-tag-3-fill text-warning align-bottom me-1"></i> BUDGET: <span class="counter-value" data-target="{{$service->s_budget}}">0</span><br>
                                          <i class="ri-price-tag-3-fill text-warning align-bottom me-1"></i> DEPENSES: <span class="counter-value" data-target="{{$sumdep}}">0</span><br><br>
                                          <p class="mb-1">Consommation du Budget </p>
-                                             <div class="progress mt-2" style="height: 10px;">
-                                                 <div class="progress-bar progress-bar-striped progress-bar-animated bg-danger" role="progressbar" style="width:{{number_format($conso, 2)}}%" aria-valuenow="75" aria-valuemin="0" aria-valuemax="75"></div>
+                                             <div class="progress mt-2" style="height: 15px;">
+                                                <div 
+                                                    class="progress-bar progress-bar-striped progress-bar-animated {{ $color }}" 
+                                                    role="progressbar" 
+                                                    style="width: {{ $progress > 100 ? 100 : $progress }}%;" 
+                                                    aria-valuenow="{{ $progress }}" 
+                                                    aria-valuemin="0" 
+                                                    aria-valuemax="100">
+                                                    {{ $progress }}%
+                                                </div>
                                              </div>
-                                
-                                          <p class="mb-1">Pourcentage : {{number_format($conso, 2)}} %</p>
+                                             @if($progress > 100)
+                                                <small class="text-danger fw-bold">
+                                                    ⚠ Dépassement !
+                                                </small>
+                                            @else
+                                            <p class="mb-1">Pourcentage : {{number_format($conso, 2)}} %</p>
+                                            @endif
                                      </div>
                                  </div>
                                 </a>

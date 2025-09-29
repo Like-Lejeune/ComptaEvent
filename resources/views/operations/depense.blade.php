@@ -96,7 +96,7 @@
                                 <div class="col-xxl-6">
                                     <label for="placeholderInput" class="form-label"> <b style="font-size: 16px">
                                         Designation<b style="color: red;">*</b></b> </label>
-                                        <input type="text" class="form-control" name="designation" placeholder="designation de la dépense">   
+                                        <input type="text" class="form-control" name="designation" placeholder="designation de la dépense">
                                 </div><br>
                                 <div class="col-xxl-6">
                                     <label for="placeholderInput" class="form-label"> <b style="font-size: 16px">
@@ -109,13 +109,13 @@
                                         @endforeach
                                     </select>
                                 </div><br>
-                                
+
                                 <div class="col-xxl-6">
                                     <label for="placeholderInput" class="form-label"> <b style="font-size: 16px">
                                         Choisir le montant (XAF) </b> </label>
                                         <input type="number" class="form-control" name="depense" id="amount" placeholder="Votre montant" min="1000" max="10000000">
                                         <span id="erreurMontant" style="color: red; display: none;">choisir entre 1 000 XAF et  10 000 000 XAF.</span>
-                                        
+
                                 </div>
                                 <br><br>
                             </div>
@@ -141,12 +141,12 @@
                                     <div class="col-xxl-6">
                                         <div>
                                             <label class="form-label" for="project-thumbnail-img">Pièces jointes (images ou
-                                                textes)</label>
+                                                textes)<b style="color: red;">*</b></b></label>
                                             <input class="form-control" id="project-thumbnail-img" type="file" name="link_piece[]" multiple  accept="image/png, image/pdf, image/jpeg, image/word">
                                         </div>
                                     </div>
 
-                                    
+
                                     <div class="col-xxl-6">
                                         <div>
                                             <label for="exampleFormControlTextarea5" class="form-label" >Informations supplémentaires</label>
@@ -169,41 +169,12 @@
                         </div>
 
                     </div>
-               
+
                 </div>
             </form>
                 <!-- end row -->
             </div>
             <!-- end col -->
-        </div>
-        <div class="col-sm-auto mb-2">
-            <div class="modal fade" id="paiement" data-bs-backdrop="static" tabindex="-1"
-                aria-labelledby="exampleModalLabel_" aria-hidden="true">
-                <div class="modal-dialog modal-dialog-centered">
-                    <div class="modal-content">
-                        <div class="modal-header bg-light p-3">
-                            <h5 class="modal-title" id="exampleModalLabel_" style="font-size: 20px">Confirm payment</h5>
-                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"
-                                id="close-modal"></button>
-                        </div>
-                        
-                            @csrf
-                            <div class="modal-body text-center p-5">
-                                <div class="mt-4 pt-4">
-                                    <h4>Ce montant sera déduit de ton compte Mytaskwork.</h4>
-                                    <!-- Toogle to second dialog -->
-                                    <input name="wallet_mtw" id="wallet_mtw" type="hidden">
-                                    <button class="btn btn-success" type="submit">
-                                        Confirmer
-                                    </button>
-                                    <button type="button" class="btn btn-light"
-                                        data-bs-dismiss="modal">Fermer</button>
-                                </div>
-                            </div>
-                       
-                    </div>
-                </div>
-            </div>
         </div>
     </div>
 
@@ -216,7 +187,7 @@
 
    <script src="{{ url('control/others/code.jquery.com/jquery-3.6.0.min.js') }}"
        integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
-   
+
 
    <!--select2 cdn-->
    <script src="{{ url('control/others/cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js') }}"></script>
@@ -246,49 +217,7 @@
 
 
 
-    <script type="text/javascript">
-        var save_method; //for save method string
-        var table;
-        $(document).ready(function() {
-
-            $('body').on('click', '.btn btn-success', function() {
-
-                var option_id = $(this).data('.img');
-                alert(option_id)
-            });
-
-        });
-
-        function typePaiement() {
-
-            //var input = document.getElementById("carte");
-            var input = document.getElementById("wallet").value;
-            const radios = document.getElementsByName("paid_option");
-
-            for (let i = 0; i < radios.length; i++) {
-                if (radios[i].checked) {
-                    // Récupérer la valeur du radio bouton coché
-                    const valeurCochee = radios[i].value;
-                    /* Faire quelque chose avec la valeur (afficher dans la console, etc.)
-                    alert("Le radio bouton coché a la valeur : " + valeurCochee); */
-                    // Récupérer l'ID de l'élément coché et l'afficher dans l'alerte
-                  
-                    const idElementCoche = radios[i].id;
-                    if(idElementCoche =="comptePhotoquix"){
-                        if(Number(valeurCochee)<Number(input)){
-                            $('#paiement').modal('show');
-                            $('#wallet_mtw').val(Number(valeurCochee));
-                        }else{
-                            alert(" BALANCE INSUFFISSANTE");
-                        }
-                       
-                    }else{
-                        alert("NON VALIDE");
-                    }
-                    break;
-                }
-            }
-        };
+<script type="text/javascript">
 
         const inputMontant = document.getElementById('amount');
         const erreurMontant = document.getElementById('erreurMontant');
@@ -305,16 +234,16 @@
                 Bsubmit.style.display ='block';
             }
         });
-    </script>
-    <script>
+</script>
+<script>
         setTimeout(function() {
             document.querySelector('.alert-success').style.display = 'none';
-    
+
         }, 10000);
         setTimeout(function() {
-    
+
             document.querySelector('.alert-danger').style.display = 'none';
         }, 10000);
-    </script>
+</script>
 
     @include('template.footer');
