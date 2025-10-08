@@ -160,35 +160,50 @@
                                             <button type="button" class="btn-close" data-bs-dismiss="modal"
                                                 aria-label="Close" id="close-modal"></button>
                                         </div>
-                                        <form id="service_"  action="{{ route('add_service') }}" method="POST" enctype="multipart/form-data">
+                                        <form id="admin_" action="{{route('updateBudget')}}" method="POST"
+                                        enctype="multipart/form-data">
+                                        @csrf
+                                        <div class="modal-body">
 
-                                            @csrf
-                                            <div class="modal-body">
-
-                                                <ul class='alert alert warning d-one' id='save_errorList'></ul>
-                                                <div class="row">
-                                                    <div class="mb-" id="modal-id" style="display: none;">
-                                                        <label for="id-field" class="form-label">ID</label>
-
-                                                    </div>
-
-                                                    <div class="col-lg-12 mb-3">
-                                                        <label for="customername-field" class="form-label">
-                                                            You are about to automatically generate all the services you are encouraged to modify these after this operation
-                                                        </label>
-                                                    </div>
+                                            <ul class='alert alert warning d-one' id='save_errorList'></ul>
+                                            <div class="row">
+                                                <div class="mb-" id="modal-id" style="display: none;">
+                                                    <label for="id-field" class="form-label">ID</label>
 
                                                 </div>
-                                            </div>
-                                            <div class="modal-footer">
-                                                <div class="hstack gap-2 justify-content-end">
-                                                    <button type="button" class="btn btn-light"
-                                                        data-bs-dismiss="modal">Close</button>
-                                                    <button type="submit" id="btnSave_"
-                                                        class="btn btn-secondary">Save</button>
+                                                <div class="col-lg-12 mb-3">
+                                                    <label for="customername-field" class="form-label"
+                                                        style="font-size: 16px">Choississez le service
+                                                    </label>
+                                                    <select class="form-select" name="service"
+                                                        aria-label="Disabled select example"
+                                                        style="font-size: 18
+                                                        16px"  required>
+                                                        @foreach ($services as $item)
+                                                                <option value="{{ $item->id_service }}">
+                                                                    {{ $item->s_name }}</option>
+                                                        @endforeach
+
+                                                    </select>
+                                                
                                                 </div>
+                                                <div class="col-lg-12 mb-3">
+                                                    <label for="placeholderInput" class="form-label"> <b style="font-size: 16px">
+                                                        Nouveau Budget</label>
+                                                        <input type="number" class="form-control" name="budget" placeholder="Ex: 5000000 XAF">   
+                                                </div><br>
+
                                             </div>
-                                        </form>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <div class="hstack gap-2 justify-content-end">
+                                                <button type="button" class="btn btn-light"
+                                                    data-bs-dismiss="modal">Fermer</button>
+                                                <button type="submit" id="btnSave"
+                                                    class="btn btn-secondary">Enregistrer</button>
+                                            </div>
+                                        </div>
+                                    </form>
                                     </div>
                                 </div>
                             </div>
@@ -199,9 +214,9 @@
                             <thead class="table-primary">
                                 <tr>
                                     <th data-sort="#">N°</th>
-                                    <th data-sort="">Service Name</th>
-                                    <th data-sort="">Price $</th>
-                                    <th data-sort="">Image ID</th>
+                                    <th data-sort="">Service</th>
+                                    <th data-sort="">Budget</th>
+                                    <th data-sort="">Solde</th>
                                     <th data-sort="">Action</th>
                                 </tr>
                             </thead>
@@ -217,11 +232,11 @@
                                 <tr>
                                   <td>{{$pos++}}</td>
                                   <td>{{$service->s_name}}</td>
-                                  <td>{{$service->s_price}}</td>
-                                  <td>{{$service->s_photo}}</td>
+                                  <td>{{$service->s_budget}}</td>
+                                  <td>{{$service->s_solde}}</td>
                                   <td>
-                                    <a href="javascript:void(0)" data-toggle="tooltip"  data-id="{{$service->id_service}}" data-original-title="Edit" class="edit btn btn-primary btn-sm editService">Modifier</a>
-                                   </td>
+                                    <a href="" type="button" class="btn btn-outline-secondary waves-effect waves-light">Modifier</a>
+                                  </td>
                                 </tr><!-- end tr -->
                             @empty
                             <tr>

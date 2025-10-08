@@ -8,22 +8,32 @@ use Illuminate\Http\Request;
 
 class CheckPlan
 {
-    public function handle(Request $request, Closure $next, $feature = null)
+    public function handle(Request $request, Closure $next)
     {
-        $user = auth()->user();
-        $plan = $user->abonnement?->plan;
+        $user = $request->user();
 
-        if (!$plan) {
-            return response()->json(['message' => 'Aucun plan actif.'], 403);
+        if (!$user) {
+            return redirect()->route('login');
         }
 
-        // Vérifier une feature spécifique
-        if ($feature && !$user->checkplan($feature)) {
-            return response()->json([
-                'message' => "Fonctionnalité réservée au Premium."
-            ], 403);
-        }
+        $planType = $user->getPlanType();
 
-        return $next($request);
+        switch ($planType) {
+            case 'Freemium':
+                return redirect()->route('subscription.upgrade')
+                    ->with('error', 'Votre plan actuel est Freemium. Passez à Premium pour accéder à cette fonctionnalité.');
+            
+            case 'Premium pro':
+                return redirect()->route('subscription.pro')
+                    ->with('info', 'Améliorez votre plan vers Pro pour débloquer cette fonctionnalité.');
+
+            case 'Premium  Standard':
+                return $next($request);
+
+            default:
+                return redirect()->route('subscription.page')
+                    ->with('error', 'Veuillez souscrire à un plan pour accéder à cette page.');
+        }
     }
 }
+

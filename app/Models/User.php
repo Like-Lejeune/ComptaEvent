@@ -63,14 +63,14 @@ class User extends Authenticatable
     return $this->hasOne(Abonnement::class, 'utilisateur_id')->where('statut','actif');
     }
 
-    public function checkplan($feature) {
-        $plan = $this->abonnement?->plan;
-        if (!$plan) return false;
+    public function getPlanType(): string
+    {
+        return strtolower($this->abonnement?->plan?->nom ?? 'Freemium');
+    }
 
-        return match($feature) {
-            'export_pdf' => $plan->export_pdf,
-            'multi_users' => $plan->multi_users,
-            default => false,
-        };
+    public function hasPremium(): bool
+    {
+        $type = $this->getPlanType();
+        return in_array($type, ['Premium Standard', 'Premium Pro']);
     }
 }

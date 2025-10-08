@@ -223,9 +223,14 @@
                                 <i class="mdi mdi-speedometer"></i> <span data-key="t-dashboards" style="font-size:12px;">Accueil</span>
                             </a>
                         </li>
-                        <li class="nav-item">
-                            <a class="nav-link menu-link" href="{{ route('userlist') }}">
-                                <i class="mdi mdi-speedometer"></i> <span data-key="t-dashboards" style="font-size:12px;">Utilisateur</span>
+                         <li class="nav-item">
+                            <a class="nav-link menu-link" href="{{ route('afficherService') }}" >
+                            <i class="ri-dashboard-fill"></i> <span data-key="t-dashboards" style="font-size:12px;">Evenements</span>
+                            </a>
+                        </li>
+                         <li class="nav-item">
+                            <a class="nav-link menu-link" href="{{ route('afficherService') }}" >
+                            <i class="ri-dashboard-fill"></i> <span data-key="t-dashboards" style="font-size:12px;">Services</span>
                             </a>
                         </li>
                         <li class="nav-item">
@@ -233,36 +238,9 @@
                                 <i class="mdi mdi-speedometer"></i> <span data-key="t-dashboards" style="font-size:12px;">Profils</span>
                             </a>
                         </li>
-                        @else
-                            <a class="nav-link menu-link" href="{{ route('user_menu') }}">
-                                <i class="mdi mdi-speedometer"></i> <span data-key="t-dashboards" style="font-size:12px;">Accueil</span>
-                            </a>
-                        @endif
-                       
-
-                        <!-- end Dashboard Menu -->
-                        <!-- end Dashboard Menu -->
-
-
                         <li class="nav-item">
-                            <a class="nav-link menu-link" href="#sidebarDashboards" data-bs-toggle="collapse" role="button" aria-expanded="false" aria-controls="sidebarDashboards">
-                                <i class="ri-user-star-fill"></i> <span data-key="t-dashboards" style="font-size:12px;"></span>
-                            </a>
-                            <div class="collapse menu-dropdown" id="sidebarDashboards">
-                                <ul class="nav nav-sm flex-column">
-                                    <li class="nav-item">
-                                        <a class="nav-link menu-link" href="{{ route('log_super') }}" >
-                                        <i class="ri-dashboard-fill"></i> <span data-key="t-dashboards" style="font-size:12px;">Actions</span>
-                                        </a>
-                                    </li>
-                                </ul>
-                            </div>
-                        </li>
-                       @if ( auth()->User()->type =='super')
-
-                        <li class="nav-item">
-                            <a class="nav-link menu-link" href="{{ route('afficherService') }}" >
-                            <i class="ri-dashboard-fill"></i> <span data-key="t-dashboards" style="font-size:12px;">Services</span>
+                            <a class="nav-link menu-link" href="{{ route('userlist') }}">
+                                <i class="mdi mdi-speedometer"></i> <span data-key="t-dashboards" style="font-size:12px;">Utilisateur</span>
                             </a>
                         </li>
                         <li class="nav-item">
@@ -270,11 +248,12 @@
                             <i class="ri-dashboard-fill"></i> <span data-key="t-dashboards" style="font-size:12px;">Activité</span>
                             </a>
                         </li>
-                       @endif
-
-
+                        @else
+                            <a class="nav-link menu-link" href="{{ route('user_menu') }}">
+                                <i class="mdi mdi-speedometer"></i> <span data-key="t-dashboards" style="font-size:12px;">Accueil</span>
+                            </a>
+                        @endif
                        <!-- end Dashboard Menu -->
-
                     </ul>
                 </div>
                 <!-- Sidebar -->

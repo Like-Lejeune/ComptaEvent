@@ -52,7 +52,7 @@ class serviceController extends Controller
       ->with('success', 'You have successfully add services.');
   }
 
-  public function edit($service_id)
+  public function editService($service_id)
   {
     $service = DB::table('services')->where('id_service', $service_id)->first();
     return response()->json($service);
