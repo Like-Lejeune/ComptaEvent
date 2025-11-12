@@ -49,11 +49,13 @@ class depenseController extends Controller
     {
 
         $validator = Validator::make($request->all(), [
-            'designation' => 'required',
-            'depense' => 'required',
-            'service_id' => 'required',
-            'date_operation' => 'required',
-            'link_piece' => 'required',
+            'designation' => 'required|string|max:60',
+            'depense' => 'required|numeric|min:0',
+            'service_id' => 'required|exists:services,id_service',
+            'date_operation' => 'required|date',
+            'link_piece' => 'nullable|array',
+            'link_piece.*' => 'file|mimes:pdf,jpg,jpeg,png,doc,docx,xls,xlsx|max:5120',
+            'sup_info' => 'nullable|string',
         ]);
         if ($validator->fails()) {
 
@@ -79,16 +81,39 @@ class depenseController extends Controller
                 ));
 
                 if ($request->file('link_piece')) {
+                    // Extensions autorisées pour les pièces jointes
+                    $allowedExtensions = ['pdf', 'jpg', 'jpeg', 'png', 'doc', 'docx', 'xls', 'xlsx'];
+                    $maxFileSize = 5 * 1024 * 1024; // 5MB
+
                     foreach ($request->file('link_piece') as $key => $file) {
-                        $extension = $file->getClientOriginalExtension();
-                        $fileName = $request->work_id . time() . rand(1, 99999).'.'.$extension;
-                        $file->move('images/work_doc/'.$fileName);
-                        DB::table('piece_jointe')->insert(
-                            [
-                                'piece_name' => $fileName,
-                                'depense_id' => $depense
-                            ]
-                        );
+                        // Validation de l'extension
+                        $extension = strtolower($file->getClientOriginalExtension());
+                        if (!in_array($extension, $allowedExtensions)) {
+                            continue; // Ignorer les fichiers non autorisés
+                        }
+
+                        // Validation de la taille
+                        if ($file->getSize() > $maxFileSize) {
+                            continue; // Ignorer les fichiers trop volumineux
+                        }
+
+                        // Générer un nom de fichier sécurisé
+                        $fileName = 'depense_' . $depense . '_' . time() . '_' . uniqid() . '.' . $extension;
+
+                        // Créer le dossier s'il n'existe pas
+                        $uploadPath = public_path('images/work_doc');
+                        if (!file_exists($uploadPath)) {
+                            mkdir($uploadPath, 0755, true);
+                        }
+
+                        // Déplacer le fichier
+                        $file->move($uploadPath, $fileName);
+
+                        // Enregistrer dans la base de données
+                        DB::table('piece_jointe')->insert([
+                            'piece_name' => $fileName,
+                            'depense_id' => $depense
+                        ]);
                     }
                 }
             return redirect()->route('historique_depense', ['service_id' => $request->input('service_id')]);

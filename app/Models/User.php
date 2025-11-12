@@ -44,6 +44,38 @@ class User extends Authenticatable
      */
     protected $casts = [
         'email_verified_at' => 'datetime',
+        'password' => 'hashed',
     ];
 
+    /**
+     * Get the profile that owns the user.
+     */
+    public function profile()
+    {
+        return $this->belongsTo(Profile::class, 'profil_id');
+    }
+
+    /**
+     * Get the services associated with the user.
+     */
+    public function services()
+    {
+        return $this->belongsToMany(Service::class, 'user_service', 'user_id', 'service_id');
+    }
+
+    /**
+     * Get the depenses for the user.
+     */
+    public function depenses()
+    {
+        return $this->hasMany(Depense::class, 'user_id');
+    }
+
+    /**
+     * Get the recettes for the user.
+     */
+    public function recettes()
+    {
+        return $this->hasMany(Recette::class, 'user_id');
+    }
 }

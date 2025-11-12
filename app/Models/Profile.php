@@ -20,4 +20,12 @@ class Profile extends Model
     protected $casts = [
         'list_action' => 'array',
     ];
+
+    /**
+     * Get the users for the profile.
+     */
+    public function users()
+    {
+        return $this->hasMany(User::class, 'profil_id');
+    }
 }
