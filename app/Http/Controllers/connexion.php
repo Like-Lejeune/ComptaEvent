@@ -7,7 +7,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 use App\Models\User;
 use Illuminate\Support\Facades\Hash;
-
+use Illuminate\Support\Facades\Auth;
 
 class connexion extends Controller
 {
@@ -75,32 +75,39 @@ class connexion extends Controller
     public function t_verification(Request $request)
     {   
         
-        $request->validate([
-
+      $credentials = $request->validate([
             'email' => 'required|email',
-            'password' => 'required'
-
+            'password' => 'required',
         ]);
-        if (auth()->attempt($request->only('email', 'password'))) {
-            $user = DB::table('users')->where('email', $this->controle_space($request->input('email')))->first();
-        
-            if ($user->status == 0) {
-                // Si le statut est 0, déconnexion immédiate et message d'erreur
-                auth()->logout();
-                return redirect()->back()->with('error', 'Votre compte est inactif. Veuillez contacter l\'administrateur.');
-            }
-        
-            // Vérification des types d'utilisateur
-            if ($user->type == "admin" || $user->type == "super") {
-                return redirect()->route('administrator');
-            }
-        
-            if ($user->type == "user") {
-                return redirect()->route('user_menu');
-            }
+
+        $user = \App\Models\User::where('email', $credentials['email'])->first();
+
+        if (!$user) {
+            return back()->with('error', 'Identifiants incorrects');
         }
 
-        return redirect()->back()->withErrors('Identification incorrecte');
+        if (!$user->hasVerifiedEmail()) {
+            return back()->with('error', 'Email non vérifié');
+        }
+
+        if ($user->status == 0) {
+            return back()->with('error', 'Votre compte est inactif. Veuillez contacter l\'administrateur.');
+        }
+
+        // On tente la connexion
+        if (!Auth::attempt($credentials)) {
+            return back()->with('error', 'Identifiants incorrects');
+        }
+
+        // Regénère la session pour plus de sécurité
+        $request->session()->regenerate();
+
+        // Redirection selon le type
+        if ($user->type === 'admin' || $user->type === 'super') {
+            return redirect()->route('administrator');
+        }
+
+        return redirect()->route('user_menu');
     }
 
 
