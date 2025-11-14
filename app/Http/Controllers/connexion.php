@@ -8,7 +8,7 @@ use Illuminate\Support\Facades\Validator;
 use App\Models\User;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Auth;
-
+use app\Mail\WelcomeUserMail;
 class connexion extends Controller
 {
     public function controle_space($chaine)
@@ -26,7 +26,8 @@ class connexion extends Controller
 
     public function identification()
     {
-        return view('singin');
+       // return view('singin');
+        return view('inscription');
     }
     public function inscription()
     {
@@ -37,34 +38,41 @@ class connexion extends Controller
 
     public function validation_inscription(Request $request)
     {
-
-
-        $validator = Validator::make($request->all(), [
- 
+        // Validation entrée
+        $validated = $request->validate([
             'name' => 'required|min:4',
-            'email' => 'required|email|unique:users',
-          ]);
-          if ($validator->fails()) {
-            
-            return redirect()->back()->with('message1','Email has already taken');
-
-
-          }else{
-
-            $nb = DB::table('users')->where('type', 'user')->count();
-            $nb++;
-            $nb = $nb++;
-            $user = new user();
-            $user->name =  $request->input('name');
-            $user->email = $request->input('email');
-            $user->type = 'user';
-            $user->password =  Hash::make($request->input('password'));
-            $user->status = 1;
-            $user->matricule = 'Compta' . $nb. "-" . date('Y')[2] . date('Y')[3];
-            $user->save();
-          }
-        
-        return back()->with('message2', 'User created successfully.');
+            'email' => 'required|email|unique:users,email',
+            'password' => 'required|min:6',
+           // 'affiliate_code' => 'nullable|exists:users,affiliate_code'
+        ], [
+           // 'affiliate_code.exists' => 'Le code d’affiliation est invalide.'
+        ]);
+    
+        // // Récupérer le parrain si code renseigné
+        // $affiliate = null;
+        // if (!empty($validated['affiliate_code'])) {
+        //     $affiliate = User::where('affiliate_code', $validated['affiliate_code'])->first();
+        // }
+    
+        // Nombre d'utilisateurs
+        $nb = User::where('type', 'user')->count() + 1;
+    
+        // Création utilisateur
+        $user = User::create([
+            'name' => $validated['name'],
+            'email' => $validated['email'],
+            'password' => Hash::make($validated['password']),
+            'type' => 'user',
+            'status' => 1,
+            'matricule' => 'Compta'.$nb."-".substr(date('Y'), 2, 2),
+           // 'affiliate_id' => $affiliate ? $affiliate->id : null,
+           //'affiliate_code' => 'AFF-' . rand(10000, 99999),
+        ]);
+    
+        // Envoi email de bienvenue
+        Mail::to($user->email)->send(new WelcomeUserMail($user));
+    
+        return back()->with('message2', 'Utilisateur créé avec succès ! Email envoyé.');
     }
 
 

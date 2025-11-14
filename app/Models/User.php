@@ -23,9 +23,14 @@ class User extends Authenticatable implements MustVerifyEmail
         'password',
         'matricule',
         'type',
+        'phone',
+        'country',
         'status',
         'profil_id',
+        //'affiliate_id', 
+        //'affiliate_code'
     ];
+
 
     /**
      * The attributes that should be hidden for serialization.
@@ -72,5 +77,17 @@ class User extends Authenticatable implements MustVerifyEmail
     {
         $type = $this->getPlanType();
         return in_array($type, ['Premium Standard', 'Premium Pro']);
+    }
+
+   
+
+    public function affiliate()
+    {
+        return $this->belongsTo(User::class, 'affiliate_id');
+    }
+
+    public function referrals()
+    {
+        return $this->hasMany(User::class, 'affiliate_id');
     }
 }
