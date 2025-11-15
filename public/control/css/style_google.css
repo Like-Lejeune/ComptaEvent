@@ -9,6 +9,7 @@ body {
     align-items: center;
 }
 
+/* CARD */
 .login-card {
     width: 360px;
     background: #fff;
@@ -19,16 +20,17 @@ body {
 }
 
 .logo {
-    width: 68px;
+    width: 200px;
     display: block;
     margin: 0 auto 10px;
 }
 
 h2 {
     text-align: center;
-    font-size: 24px;
+    font-size: 22px;
     font-weight: 500;
     margin-bottom: 5px;
+    color: #00bb61;
 }
 
 p.subtitle {
@@ -38,6 +40,7 @@ p.subtitle {
     font-size: 15px;
 }
 
+/* FORM */
 .form-group {
     margin-bottom: 18px;
 }
@@ -50,7 +53,7 @@ label {
 }
 
 input {
-    width: 100%;
+    width: 95%;
     padding: 12px 10px;
     font-size: 16px;
     border: 1px solid #dadce0;
@@ -65,12 +68,13 @@ input:focus {
 
 .forgot {
     font-size: 14px;
-    color: #1a73e8;
+    color: #03913e;
     text-decoration: none;
     margin-top: 5px;
     display: inline-block;
 }
 
+/* ACTIONS */
 .actions {
     margin-top: 30px;
     display: flex;
@@ -79,14 +83,14 @@ input:focus {
 }
 
 .register {
-    color: #1a73e8;
+    color: #0b854a;
     text-decoration: none;
     font-weight: 500;
     font-size: 14px;
 }
 
 button {
-    background: #1a73e8;
+    background: #00bb61;
     color: #fff;
     border: none;
     padding: 10px 25px;
@@ -97,12 +101,73 @@ button {
 }
 
 button:hover {
-    background: #1667c1;
+    background: #04af37;
 }
 
-@media (max-width: 480px) {
+/* -------------------------
+   RESPONSIVE
+   ------------------------- */
+
+/* Tablette */
+@media (max-width: 768px) {
+    body {
+        padding: 20px;
+        height: auto;          /* évite coupure sur tablettes */
+        align-items: flex-start;
+    }
+
     .login-card {
-        width: 92%;
-        padding: 30px 20px;
+        width: 80%;
+        max-width: 380px;
+        padding: 35px 25px;
+    }
+}
+
+/* Mobile portrait */
+@media (max-width: 480px) {
+    body {
+        padding: 15px;
+        align-items: flex-start;
+    }
+
+    .login-card {
+        width: 100%;
+        padding: 25px 18px;
+        border-radius: 6px;
+    }
+
+    .logo {
+        width: 160px;
+    }
+
+    h2 {
+        font-size: 20px;
+    }
+
+    input {
+        font-size: 15px;
+        padding: 11px 10px;
+    }
+
+    .actions {
+        flex-direction: column;
+        gap: 15px;
+        text-align: center;
+    }
+
+    button {
+        width: 100%;
+        padding: 12px;
+    }
+}
+
+/* Très petits téléphones (320px) */
+@media (max-width: 360px) {
+    .login-card {
+        padding: 20px 15px;
+    }
+
+    input {
+        font-size: 14px;
     }
 }

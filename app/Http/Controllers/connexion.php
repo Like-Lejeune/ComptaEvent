@@ -5,6 +5,9 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\Log;
+use App\Models\Evenement;
+use App\Models\Service;
 use App\Models\User;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Auth;
@@ -23,20 +26,17 @@ class connexion extends Controller
     {
         return view('admin.Menu');
     }
-
     public function identification()
     {
-       // return view('singin');
-        return view('inscription');
+        return view('singin');
+        //return view('inscription');
     }
     public function inscription()
     {
-        $country = $this->get_country();
-        $all_country = $this->all_country();
-        return view('inscription')->with('default_country', $country)->with('pays', $all_country);
+        return view('inscription');
     }
 
-    public function validation_inscription(Request $request)
+    public function validation_inscription_(Request $request)
     {
         // Validation entrée
         $validated = $request->validate([
@@ -70,16 +70,97 @@ class connexion extends Controller
         ]);
     
         // Envoi email de bienvenue
-        Mail::to($user->email)->send(new WelcomeUserMail($user));
-    
+         $user->notify(new WelcomeUserMail($user));
         return back()->with('message2', 'Utilisateur créé avec succès ! Email envoyé.');
     }
 
+      public function validation_inscription(Request $request)
+    {
+        // Validation
+        $validated = $request->validate([
+            // user
+            'name' => 'required|string|max:255',
+            'email' => 'required|email|unique:users,email',
+            'password' => 'required|string|min:6',
+            'country' => 'nullable|string|max:100',
+            'phone' => 'nullable|string|max:30',
+
+            // evenement
+            'nom' => 'required|string|max:255',
+            'description' => 'nullable|string',
+            'date_debut' => 'required|date',
+            'date_fin' => 'required|date|after_or_equal:date_debut',
+            'budget_total' => 'required|numeric|min:0',
+
+            // services (optionnel)
+            'services' => 'nullable|array|max:4',
+            'services.*.s_name' => 'required_with:services|string|max:60',
+            'services.*.s_description' => 'nullable|string',
+            'services.*.s_budget' => 'nullable|numeric|min:0',
+            'services.*.s_solde' => 'nullable|numeric|min:0',
+            // s_photo est volontairement ignoré ici (pas de rule pour les fichiers)
+        ], [
+            'services.max' => 'Vous pouvez ajouter au maximum 4 services.',
+            'date_fin.after_or_equal' => 'La date de fin doit être postérieure ou égale à la date de début.'
+        ]);
+
+        // Utiliser une transaction pour garantir la consistance
+        DB::beginTransaction();
+        try {
+            // 1) Création de l'utilisateur
+            $user = User::create([
+                'name' => $validated['name'],
+                'email' => $validated['email'],
+                'password' => Hash::make($validated['password']),
+                'type' => 'user',
+                'country' => $validated['country'] ?? null,
+                'phone' => $validated['phone'] ?? '',
+                // si tu as d'autres champs par défaut, ajoute-les ici
+            ]);
+
+            // 2) Création de l'événement lié à l'utilisateur
+            $evenement = Evenement::create([
+                'utilisateur_id' => $user->id,
+                'nom' => $validated['nom'],
+                'description' => $validated['description'] ?? null,
+                'date_debut' => $validated['date_debut'],
+                'date_fin' => $validated['date_fin'],
+                'budget_total' => $validated['budget_total'],
+                'annee' => $validated['annee'] ?? null,
+            ]);
+
+            // 3) Création des services (si fournis)
+            $services = $request->input('services', []);
+            if (is_array($services) && count($services) > 0) {
+                foreach ($services as $idx => $s) {
+                    // Respecter la limite de 4 (déjà validée), défensif:
+                    if ($idx >= 4) break;
+
+                    // Création du service : on n'utilise pas le champ s_photo (ignoré)
+                    Service::create([
+                        // si ta table utilise 'id_service' comme PK, vérifie la propriété $primaryKey dans le modèle
+                        'evenement_id' => $evenement->id,
+                        's_name' => $s['s_name'] ?? '',
+                        's_description' => $s['s_description'] ?? '',
+                        's_budget' => isset($s['s_budget']) ? $s['s_budget'] : 0,
+                        's_solde' => isset($s['s_solde']) ? $s['s_solde'] : 0,
+                        's_photo' => '', // photo ignorée pour l'instant
+                    ]);
+                }
+            }
+
+            DB::commit();
+            $user->notify(new WelcomeUserMail($user));
+            return redirect()->back()->with('success', 'Inscription et événement créés avec succès.');
+        } catch (\Throwable $e) {
+            DB::rollBack();
+            Log::error('finalSubmit error: '.$e->getMessage(), ['trace' => $e->getTraceAsString()]);
+
+            return redirect()->back()->withInput()->withErrors(['error' => 'Une erreur est survenue lors de l\'enregistrement.']);
+        }
+    }
 
 
-
-
-    
     public function t_verification(Request $request)
     {   
         

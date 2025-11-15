@@ -22,7 +22,7 @@ class CreateUsersTable extends Migration
             $table->timestamp('email_verified_at')->nullable();
             $table->timestamps();
             $table->enum('type', ['super', 'admin', 'user'])->default('user');
-            $table->string('country');
+            $table->string('country')->nullable();
             $table->string('phone')->default("");
             $table->enum('status', ["0", "1"])->default(0);
             $table->string('matricule', 60)->unique();

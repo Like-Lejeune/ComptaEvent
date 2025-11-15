@@ -1,0 +1,168 @@
+
+    body {
+        padding: 0;
+        margin: 0;
+        background: #f7f8fa;
+        font-family: "Roboto", sans-serif;
+    }
+
+    .container {
+        width: 400px;
+        max-width: 600px;
+        margin: 20px auto;
+        background: #fff;
+        border-radius: 10px;
+        padding: 25px;
+        border: 1px solid #dadce0;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+    .logo {
+        width: 200px;
+        display: block;
+        margin: 0 auto 10px;
+    }
+    h2 {
+        font-weight: 500;
+        color: #202124;
+        margin-bottom: 10px;
+        font-size: 1.3rem;
+    }
+
+    .step {
+        display: none;
+    }
+
+    .step.active {
+        display: block;
+    }
+
+    .form-group {
+        margin-bottom: 20px;
+    }
+
+    label {
+        font-size: 14px;
+        color: #5f6368;
+        margin-bottom: 5px;
+        display: block;
+    }
+
+    input, textarea, select {
+        width: 95%;
+        padding: 8px;
+        border: 1px solid #dadce0;
+        border-radius: 6px;
+        font-size: 15px;
+        outline: none;
+    }
+
+    input:focus, textarea:focus {
+        border-color: #1a73e8;
+        box-shadow: 0 0 0 1px #1a73e8;
+    }
+
+    textarea {
+        resize: vertical;
+    }
+
+    .btn {
+        background: #00bb61;
+        color: #fff;
+        padding: 12px 22px;
+        border-radius: 6px;
+        border: none;
+        font-weight: 500;
+        cursor: pointer;
+        font-size: 15px;
+        width: 100%;
+        margin-bottom: 10px;
+    }
+
+    .btn-secondary {
+        background: #e6e6e6;
+        color: #333;
+    }
+
+    .btn:hover {
+        background: #04af37;
+    }
+    .btn-secondary:hover {
+        background: #44554d;
+    }
+
+    /* Services */
+    .services-box {
+        padding: 15px;
+        border: 1px dashed #bbbbbb;
+        margin-bottom: 15px;
+        border-radius: 8px;
+        background: #fafafa;
+    }
+
+    .service-title {
+        font-weight: bold;
+        margin-bottom: 8px;
+        font-size: 16px;
+    }
+
+    .add-btn {
+        background: #5597f3;
+        padding: 10px 15px;
+        color: #fff;
+        border: none;
+        border-radius: 6px;
+        cursor: pointer;
+        width: 100%;
+        font-size: 14px;
+        margin-top: 5px;
+    }
+
+    .add-btn:disabled {
+        background: #467d85;
+        cursor: not-allowed;
+    }
+
+    .actions {
+    margin-top: 30px;
+    display: flex;
+    color: #08c46c;
+    justify-content: space-between;
+    align-items: center;        
+    }
+
+    /* ---------------------------
+       RESPONSIVITÉ
+       --------------------------- */
+
+    @media (max-width: 600px) {
+
+        .container {
+            padding: 15px;
+            margin: 10px;
+        }
+
+        h2 {
+            font-size: 1.3rem;
+        }
+
+        .btn, .add-btn {
+            font-size: 14px;
+            padding: 10px;
+        }
+
+        input, textarea {
+            font-size: 14px;
+            padding: 10px;
+        }
+
+        .services-box {
+            padding: 12px;
+        }
+    }
+
+    @media (min-width: 900px) {
+        .btn, .add-btn {
+            width: auto;
+        }
+    }
+
