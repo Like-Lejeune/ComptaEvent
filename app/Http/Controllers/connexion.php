@@ -9,6 +9,8 @@ use Illuminate\Support\Facades\Log;
 use App\Models\Evenement;
 use App\Models\Service;
 use App\Models\User;
+use App\Models\Plan;
+use App\Models\Abonnement;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Auth;
 use app\Mail\WelcomeUserMail;
@@ -97,28 +99,49 @@ class connexion extends Controller
             'services.*.s_name' => 'required_with:services|string|max:60',
             'services.*.s_description' => 'nullable|string',
             'services.*.s_budget' => 'nullable|numeric|min:0',
-            'services.*.s_solde' => 'nullable|numeric|min:0',
-            // s_photo est volontairement ignoré ici (pas de rule pour les fichiers)
-        ], [
-            'services.max' => 'Vous pouvez ajouter au maximum 4 services.',
-            'date_fin.after_or_equal' => 'La date de fin doit être postérieure ou égale à la date de début.'
         ]);
 
-        // Utiliser une transaction pour garantir la consistance
+        // Numéro matricule
+        $nb = User::where('type', 'admin')->count() + 1;
+
         DB::beginTransaction();
         try {
-            // 1) Création de l'utilisateur
+
+            /**
+             * 1️⃣ Création de l'utilisateur
+             */
             $user = User::create([
                 'name' => $validated['name'],
                 'email' => $validated['email'],
                 'password' => Hash::make($validated['password']),
-                'type' => 'user',
+                'type' => 'admin',
                 'country' => $validated['country'] ?? null,
                 'phone' => $validated['phone'] ?? '',
-                // si tu as d'autres champs par défaut, ajoute-les ici
+                'matricule' => 'MTW-'.$nb."-".substr(date('Y'), 2, 2),
             ]);
 
-            // 2) Création de l'événement lié à l'utilisateur
+            /**
+             * 2️⃣ Attribution du plan Freemium automatiquement
+             */
+            $plan_freemium = Plan::where('nom', 'Freemium')->first();
+
+            if (!$plan_freemium) {
+                // On peut lever une exception si pas de plan trouvé
+                throw new \Exception("Le plan Freemium n'existe pas dans la table plans.");
+            }
+
+            // Abonnement valable 30 jours (par exemple)
+            Abonnement::create([
+                'utilisateur_id' => $user->id,
+                'plan_id' => $plan_freemium->id,
+                'date_debut' => now()->format('Y-m-d'),
+                'date_fin' => now()->addDays(30)->format('Y-m-d'),
+                'statut' => 'actif',
+            ]);
+
+            /**
+             * 3️⃣ Création de l'événement
+             */
             $evenement = Evenement::create([
                 'utilisateur_id' => $user->id,
                 'nom' => $validated['nom'],
@@ -126,40 +149,46 @@ class connexion extends Controller
                 'date_debut' => $validated['date_debut'],
                 'date_fin' => $validated['date_fin'],
                 'budget_total' => $validated['budget_total'],
-                'annee' => $validated['annee'] ?? null,
             ]);
 
-            // 3) Création des services (si fournis)
+            /**
+             * 4️⃣ Création des services
+             */
             $services = $request->input('services', []);
+
             if (is_array($services) && count($services) > 0) {
+
                 foreach ($services as $idx => $s) {
-                    // Respecter la limite de 4 (déjà validée), défensif:
                     if ($idx >= 4) break;
 
-                    // Création du service : on n'utilise pas le champ s_photo (ignoré)
                     Service::create([
-                        // si ta table utilise 'id_service' comme PK, vérifie la propriété $primaryKey dans le modèle
                         'evenement_id' => $evenement->id,
                         's_name' => $s['s_name'] ?? '',
                         's_description' => $s['s_description'] ?? '',
                         's_budget' => isset($s['s_budget']) ? $s['s_budget'] : 0,
-                        's_solde' => isset($s['s_solde']) ? $s['s_solde'] : 0,
-                        's_photo' => '', // photo ignorée pour l'instant
+                        's_photo' => '',
                     ]);
                 }
             }
 
             DB::commit();
-            $user->notify(new WelcomeUserMail($user));
-            return redirect()->back()->with('success', 'Inscription et événement créés avec succès.');
-        } catch (\Throwable $e) {
-            DB::rollBack();
-            Log::error('finalSubmit error: '.$e->getMessage(), ['trace' => $e->getTraceAsString()]);
 
-            return redirect()->back()->withInput()->withErrors(['error' => 'Une erreur est survenue lors de l\'enregistrement.']);
+            return redirect()
+                ->route('identification')
+                ->with('success', "Compte créé avec plan Freemium actif.");
+        
+        } catch (\Throwable $e) {
+
+            DB::rollBack();
+            Log::error('finalSubmit error: '.$e->getMessage(), [
+                'trace' => $e->getTraceAsString()
+            ]);
+
+            return redirect()
+                ->back()
+                ->with('error', 'Erreur lors de la création. Vérifiez les champs requis.');
         }
     }
-
 
     public function t_verification(Request $request)
     {   

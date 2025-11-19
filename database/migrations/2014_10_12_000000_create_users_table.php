@@ -24,7 +24,7 @@ class CreateUsersTable extends Migration
             $table->enum('type', ['super', 'admin', 'user'])->default('user');
             $table->string('country')->nullable();
             $table->string('phone')->default("");
-            $table->enum('status', ["0", "1"])->default(0);
+            $table->enum('status', ["0", "1"])->default(1);
             $table->string('matricule', 60)->unique();
         });
     }

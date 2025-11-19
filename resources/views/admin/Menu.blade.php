@@ -31,9 +31,10 @@
             </div>
         </div>
         @php
-       $services = DB::table('services')
-              ->orderBy('s_name', 'asc')     // Puis par nom au sein de chaque catégorie
-              ->get();    
+        $services = DB::table('services')
+            ->where('user_id', Auth::id())
+            ->orderBy('s_name', 'asc')
+            ->get();  
         @endphp
 
         {{-- Modal service --}}
@@ -162,11 +163,10 @@
                                  </div>
                              </div>
                              @php
-                             $sumdep = DB::table('depense')
-                             ->where('service_id', '=', $service->id_service)
-                             ->sum('s_depense');
-                             
- 
+                            $sumdep = DB::table('depense')
+                                ->where('service_id', '=', $service->id_service)
+                                ->where('user_id', Auth::id())
+                                ->sum('s_depense');
                              $conso=($sumdep*100)/$service->s_budget
                             @endphp
                             @php
@@ -233,7 +233,8 @@
                             <div class="card-header p-0 border-0 bg-soft-light">
                                 <div class="row g-0 text-center">
                                     @php
-                                         $countService = DB::table('services')
+                                        $countService = DB::table('services')
+                                        ->where('user_id', Auth::id())
                                         ->count();
                                     @endphp
                                     <div class="col-6 col-sm-3">
@@ -245,8 +246,9 @@
                                     </div>
                                     <!--end col-->
                                     @php
-                                     $sumPrix = DB::table('services')
-                                    ->sum('s_budget');
+                                     $sumPrix = $sumBudget = DB::table('services')
+                                        ->where('user_id', Auth::id())
+                                        ->sum('s_budget');
                                     @endphp
                                     <div class="col-6 col-sm-3">
                                         <div class="p-3 border border-dashed border-start-0">
@@ -257,8 +259,9 @@
                                     </div>
                                     <!--end col-->
                                     @php
-                                     $sumPrix = DB::table('depense')
-                                    ->sum('s_depense');
+                                     $sumPrix = $sumDepenses = DB::table('depense')
+                                        ->where('user_id', Auth::id())
+                                        ->sum('s_depense');
                                     @endphp
                                     <div class="col-6 col-sm-3">
                                         <div class="p-3 border border-dashed border-start-0">
@@ -269,13 +272,14 @@
                                     </div>
                                     <!--end col-->
                                     @php
-                                     $sumPrix = DB::table('services')
-                                    ->sum('s_solde');
+                                      $sumSolde = DB::table('services')
+                                            ->where('user_id', Auth::id())
+                                            ->sum('s_solde');
                                     @endphp
                                     <div class="col-6 col-sm-3">
                                         <div class="p-3 border border-dashed border-start-0 border-end-0">
                                             <h5 class="mb-1 text-success"><span class="counter-value"
-                                                    data-target="{{$sumPrix}}">0</span> FCFA</h5>
+                                                    data-target="{{$sumSolde}}">0</span> FCFA</h5>
                                             <p class="text-muted mb-0">Solde Total restant</p>
                                         </div>
                                     </div>

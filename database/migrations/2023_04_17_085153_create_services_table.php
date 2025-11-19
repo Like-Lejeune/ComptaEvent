@@ -16,7 +16,7 @@ class CreateServicesTable extends Migration
         Schema::create('services', function (Blueprint $table) {
             $table->bigIncrements('id_service');
             $table->unsignedBigInteger('evenement_id')->nullable();// FK → evenements.id
-            $table->string('s_name', 60);
+            $table->string('s_name');
             $table->text('s_description')->default("");
             $table->bigInteger('s_budget', false)->default(0);
             $table->bigInteger('s_solde', false)->default(0);

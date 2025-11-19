@@ -14,7 +14,7 @@
 <div class="container">
     <img src="{{ url('control/images/nft/mtwlogo_dark.png')}}"alt="Logo"
              class="logo">
-    <form id="multiForm" method="POST" enctype="multipart/form-data" action="/final-submit">
+    <form id="multiForm" method="POST" enctype="multipart/form-data" action="{{ route('validation_inscription') }}">
         @csrf
 
         <!-- ÉTAPE 1 : USER -->
@@ -99,7 +99,7 @@
     </form>
 
 </div>
-
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script>
     let currentStep = 1;
     let serviceCount = 0;
@@ -125,7 +125,7 @@
             <div class="service-title">Service ${serviceCount}</div>
             <div class="form-group">
                 <label>Nom du service</label>
-                <input type="text" name="services[${serviceCount}][s_name]" required>
+                <input type="text" class="s-name" name="services[${serviceCount}][s_name]" required>
             </div>
             <div class="form-group">
                 <label>Description</label>
@@ -133,7 +133,12 @@
             </div>
             <div class="form-group">
                 <label>Budget</label>
-                <input type="number" name="services[${serviceCount}][s_budget]" required>
+                <input type="number" 
+                       class="service-budget" 
+                       name="services[${serviceCount}][s_budget]" 
+                       min="0" 
+                       required 
+                       oninput="checkServiceBudgets()">
             </div>
         `;
 
@@ -144,7 +149,71 @@
         }
     }
 
-</script>
+    // 🔥 VERIFICATION 1 : Date Fin doit être >= Date Début
+    document.addEventListener("DOMContentLoaded", () => {
+        const dateDebut = document.querySelector("input[name='date_debut']");
+        const dateFin = document.querySelector("input[name='date_fin']");
 
+        function verifyDates() {
+            if (dateDebut.value && dateFin.value && dateFin.value < dateDebut.value) {
+                Swal.fire({
+                    icon: 'warning',
+                    title: 'Date invalide',
+                    text: 'La date de fin ne peut pas être antérieure à la date de début.',
+                    confirmButtonColor: '#3085d6'
+                });
+                dateFin.value = "";
+            }
+        }
+
+        dateDebut.addEventListener("change", verifyDates);
+        dateFin.addEventListener("change", verifyDates);
+    });
+
+    let lastBudgetInput = null;
+
+    // 🔥 VERIFICATION 2 : Budget total vs sommes des services
+    function checkServiceBudgets(event) {
+        const totalBudget = parseFloat(document.querySelector("input[name='budget_total']").value) || 0;
+        const serviceBudgets = document.querySelectorAll(".service-budget");
+
+        // On garde en mémoire le champ qui a changé
+        if (event && event.target) {
+            lastBudgetInput = event.target;
+        }
+
+        let sum = 0;
+        serviceBudgets.forEach(input => {
+            sum += parseFloat(input.value) || 0;
+        });
+
+        if (sum > totalBudget) {
+            Swal.fire({
+                icon: 'error',
+                title: 'Budget dépassé',
+                text: 'La somme des budgets des services dépasse le budget total.',
+                confirmButtonColor: '#d33'
+            }).then(() => {
+                // ⚠️ Efface le champ fautif !
+                if (lastBudgetInput) {
+                    lastBudgetInput.value = "";
+                }
+            });
+        }
+    }
+
+    // Re-vérifier quand le budget total change
+    document.addEventListener("DOMContentLoaded", () => {
+        const totalInput = document.querySelector("input[name='budget_total']");
+        totalInput.addEventListener("input", checkServiceBudgets);
+
+        // ⚠️ Ajoute l'événement sur CHAQUE budget de service
+        document.addEventListener("input", (e) => {
+            if (e.target.classList.contains("service-budget")) {
+                checkServiceBudgets(e);
+            }
+        });
+    });
+</script>
 </body>
 </html>
