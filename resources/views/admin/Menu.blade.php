@@ -32,7 +32,8 @@
         </div>
         @php
         $services = DB::table('services')
-            ->where('user_id', Auth::id())
+            ->join('evenements', 'evenements.id', '=', 'services.evenement_id')
+            ->where('evenements.utilisateur_id', Auth::id())
             ->orderBy('s_name', 'asc')
             ->get();  
         @endphp
@@ -234,7 +235,8 @@
                                 <div class="row g-0 text-center">
                                     @php
                                         $countService = DB::table('services')
-                                        ->where('user_id', Auth::id())
+                                        ->join('evenements', 'evenements.id', '=', 'services.evenement_id')
+                                        ->where('evenements.utilisateur_id', Auth::id())
                                         ->count();
                                     @endphp
                                     <div class="col-6 col-sm-3">
@@ -247,7 +249,8 @@
                                     <!--end col-->
                                     @php
                                      $sumPrix = $sumBudget = DB::table('services')
-                                        ->where('user_id', Auth::id())
+                                       ->join('evenements', 'evenements.id', '=', 'services.evenement_id')
+                                        ->where('evenements.utilisateur_id', Auth::id())
                                         ->sum('s_budget');
                                     @endphp
                                     <div class="col-6 col-sm-3">
@@ -260,7 +263,8 @@
                                     <!--end col-->
                                     @php
                                      $sumPrix = $sumDepenses = DB::table('depense')
-                                        ->where('user_id', Auth::id())
+                                        ->join('evenements', 'evenements.id', '=', 'depense.evenement_id')
+                                        ->where('evenements.utilisateur_id', Auth::id())
                                         ->sum('s_depense');
                                     @endphp
                                     <div class="col-6 col-sm-3">
@@ -273,8 +277,9 @@
                                     <!--end col-->
                                     @php
                                       $sumSolde = DB::table('services')
-                                            ->where('user_id', Auth::id())
-                                            ->sum('s_solde');
+                                            ->join('evenements', 'evenements.id', '=', 'services.evenement_id')
+                                        ->where('evenements.utilisateur_id', Auth::id())
+                                        ->sum('s_solde');
                                     @endphp
                                     <div class="col-6 col-sm-3">
                                         <div class="p-3 border border-dashed border-start-0 border-end-0">

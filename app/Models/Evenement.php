@@ -38,4 +38,8 @@ class Evenement extends Model
     {
         return $this->hasMany(Service::class, 'evenement_id');
     }
+    public function depenses()
+    {
+        return $this->hasMany(Depense::class, 'evenement_id');
+    }
 }

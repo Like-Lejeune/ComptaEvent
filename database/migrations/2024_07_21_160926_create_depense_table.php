@@ -14,6 +14,7 @@ return new class extends Migration
         Schema::create('depense', function (Blueprint $table) {
             $table->id('id_depense');
             $table->unsignedBigInteger('service_id');
+            $table->unsignedBigInteger('evenement_id')->nullable();
             $table->string('d_name', 60)->default("");
             $table->unsignedBigInteger('user_id');
             $table->text('d_description')->default("");
