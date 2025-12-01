@@ -18,12 +18,12 @@
         <div class="row">
             <div class="col-12">
                 <div class="page-title-box d-sm-flex align-items-center justify-content-between">
-                    <h4 class="mb-sm-0">Accueil</h4>
+                    <h4 class="mb-sm-0">Event-Projet</h4>
 
                     <div class="page-title-right">
                         <ol class="breadcrumb m-0">
                             <li class="breadcrumb-item"><a href="javascript: void(0);">Tableau de bord</a></li>
-                            <li class="breadcrumb-item active">Accueil</li>
+                            <li class="breadcrumb-item active"> Event-Projet</li>
                         </ol>
                     </div>
 
@@ -63,7 +63,8 @@
                                     <div class="col-lg-12 mb-3">
                                         <label for="placeholderInput" class="form-label"> <b style="font-size: 16px">
                                             Nouveau service</label>
-                                            <input type="texte" class="form-control" name="s_service" placeholder="Ex: Sonorisation">   
+                                            <input type="texte" class="form-control" name="s_service" placeholder="Ex: Sonorisation">
+                                            <input type="hidden" name="evenement_id">   
                                     </div><br>
                                     <div class="col-lg-12 mb-3">
                                         <label for="placeholderInput" class="form-label"> <b style="font-size: 16px">

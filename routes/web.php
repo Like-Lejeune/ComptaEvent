@@ -63,13 +63,13 @@ Route::middleware(['auth'])->group(function () {
     });
 
     Route::middleware(['check.plan'])->group(function () {
-    Route::resource('profiles', ProfileController::class);
+    Route::resource('profiles', ProfileController::class); 
     Route::post('nouveauService', [service::class, 'nouveauService'])->name('nouveauService');
     Route::get('DocsTelecharger/{depense_id}', [depense::class, 'DocsTelecharger'])->name('DocsTelecharger');
     Route::get('user_menu', [Menu::class, 'user_menu'])->name('user_menu');
     Route::put('update_depense', [depense::class, 'update_depense'])->name('update_depense');
     Route::get('etat_service_pdf/{service_id}', [pdf::class, 'etat_service_pdf'])->name('etat_service_pdf');
-    Route::get('etat_global_pdf', [pdf::class, 'etat_global_pdf'])->name('etat_global_pdf');
+    Route::get('etat_global_pdf', [pdf::class, 'etat_global_pdf'])->name('etat_global_pdf') ;
        
     //////////////////////   Users service   //////////////////////
     Route::post('nouvelUser', [user_service::class, 'nouvelUser'])->name('nouvelUser');

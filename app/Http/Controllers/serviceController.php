@@ -29,7 +29,7 @@ class serviceController extends Controller
   {
 
     $validator = Validator::make($request->all(), [
-
+        'evenement_id' => 'required',
         's_service' => 'required',
         's_budget' => 'required',
     ]);
@@ -41,7 +41,7 @@ class serviceController extends Controller
         $service = DB::table('services')->insertGetId(
             [
                 's_name' => $this->tools->controle_space($request->input('s_service')),
-                //'s_description' => $this->tools->controle_space($request->input('description')),
+                'evenement_id' => $this->tools->controle_space($request->input('evenement_id')),
                 //'s_photo' => "default.png",
                 's_solde' => $this->tools->controle_space($request->input('s_budget')),
                 's_budget' => $this->tools->controle_space($request->input('s_budget')),

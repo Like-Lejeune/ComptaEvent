@@ -10,30 +10,34 @@ class CheckPlan
 {
     public function handle(Request $request, Closure $next)
     {
-        $user = $request->user();
+         $user = $request->user();
 
-        if (!$user) {
-            return redirect()->route('login');
-        }
-
-        $planType = $user->getPlanType();
-
-        switch ($planType) {
-            case 'Freemium':
-                return redirect()->route('subscription.upgrade')
-                    ->with('error', 'Votre plan actuel est Freemium. Passez à Premium pour accéder à cette fonctionnalité.');
-            
-            case 'Premium pro':
-                return redirect()->route('subscription.pro')
-                    ->with('info', 'Améliorez votre plan vers Pro pour débloquer cette fonctionnalité.');
-
-            case 'Premium  Standard':
-                return $next($request);
-
-            default:
-                return redirect()->route('subscription.page')
-                    ->with('error', 'Veuillez souscrire à un plan pour accéder à cette page.');
-        }
+    if (!$user) {
+        return redirect()->route('login');
     }
+
+    $plan = $user->getPlanType();
+
+    // 🚫 Cas Freemium → bloqué
+    if ($plan === 'Freemium') {
+        return redirect()->route('subscription.upgrade')
+            ->with('error', 'Votre plan actuel est Freemium. Passez à un plan supérieur pour accéder à cette fonctionnalité.');
+    }
+
+    // ✔ Cas Standard → accès normal
+    if ($plan === 'Premium Standard') {
+        return $next($request);
+    }
+
+    // ✔ Cas Pro → accès normal
+    if ($plan === 'Premium Pro') {
+        return $next($request);
+    }
+
+    // Si jamais un cas bizarre arrive
+    return redirect()->route('subscription.page')
+        ->with('info', 'Veuillez souscrire à un plan pour accéder à cette page.');
+    }
+
 }
 

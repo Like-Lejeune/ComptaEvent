@@ -70,7 +70,8 @@ class User extends Authenticatable implements MustVerifyEmail
 
     public function getPlanType(): string
     {
-        return strtolower($this->abonnement?->plan?->nom ?? 'Freemium');
+        
+        return $this->abonnement?->plan?->nom ?? 'Freemium';
     }
 
     public function hasPremium(): bool

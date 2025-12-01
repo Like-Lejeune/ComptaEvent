@@ -22,14 +22,18 @@ class depenseController extends Controller
 
        if ($user->type == "admin" || $user->type == "super") {
             // Super admin : accès à tous les services
-            $services = DB::table('services')->get();
+            $services = DB::table('services')
+            ->join('evenements', 'evenements.id', '=', 'services.evenement_id')
+            ->where('evenements.utilisateur_id', $user->id)
+            ->orderBy('s_name', 'asc')
+            ->get();  
         } else {
         // Utilisateur normal : accès via pivot
         $services = DB::table('services')
             ->join('user_service', 'id_service', '=', 'user_service.service_id')
             ->where('user_service.user_id', $user->id)
             ->select('services.*')
-            ->get();
+            ->get(); 
     }  
         return view('operations.depense')->with('service', $services);
     }

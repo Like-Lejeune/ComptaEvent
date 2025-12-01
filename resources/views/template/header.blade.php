@@ -217,7 +217,7 @@
                     <div id="two-column-menu">
                     </div>
                     <ul class="navbar-nav" id="navbar-nav">
-                        @if (auth()->User()->type =='super')
+                        @if (auth()->User()->type =='admin')
                         <li class="nav-item">
                             <a class="nav-link menu-link" href="{{ route('administrator') }}">
                                 <i class="mdi mdi-speedometer"></i> <span data-key="t-dashboards" style="font-size:12px;">Accueil</span>
