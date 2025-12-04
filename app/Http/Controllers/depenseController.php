@@ -19,23 +19,28 @@ class depenseController extends Controller
     public function nouvelle_depense()
     { 
         $user = auth()->user();
-
+        $event = DB::table('services')
+            ->join('evenements', 'evenements.id', '=', 'services.evenement_id')
+            ->where('evenements.utilisateur_id', $user->id)
+            ->get(); 
        if ($user->type == "admin" || $user->type == "super") {
             // Super admin : accès à tous les services
             $services = DB::table('services')
             ->join('evenements', 'evenements.id', '=', 'services.evenement_id')
             ->where('evenements.utilisateur_id', $user->id)
             ->orderBy('s_name', 'asc')
-            ->get();  
+            ->get();   
         } else {
         // Utilisateur normal : accès via pivot
         $services = DB::table('services')
             ->join('user_service', 'id_service', '=', 'user_service.service_id')
             ->where('user_service.user_id', $user->id)
             ->select('services.*')
-            ->get(); 
+            ->get();
+             
     }  
-        return view('operations.depense')->with('service', $services);
+        return view('operations.depense')->with('service', $services)
+                                         ->with('event',$event);
     }
 
     public function historique_depense($service_id)
@@ -67,6 +72,7 @@ class depenseController extends Controller
             'designation' => 'required',
             'depense' => 'required',
             'service_id' => 'required',
+            'evenement_id' => 'required',
             'date_operation' => 'required',
             'link_piece' => 'required',
         ]);
@@ -79,6 +85,7 @@ class depenseController extends Controller
                 [
                     'd_name' => $this->tools->controle_space($request->input('designation')),
                     's_depense' => $this->tools->controle_space($request->input('depense')),
+                    'evenement_id' => $this->tools->controle_space($request->input('evenement_id')),
                     'date_operation' => $request->input('date_operation'),
                     'd_description' => $this->tools->controle_space($request->input('sup_info')),
                     'user_id' => auth()->User()->id,

@@ -9,7 +9,7 @@ class Depense extends Model
 {
     use HasFactory;
 
-    protected $table = 'depenses'; // ⚠️ convention Laravel = pluriel
+    protected $table = 'depense'; // ⚠️ convention Laravel = pluriel
 
     protected $fillable = [
         'service_id',

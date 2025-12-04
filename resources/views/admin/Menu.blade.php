@@ -249,10 +249,9 @@
                                     </div>
                                     <!--end col-->
                                     @php
-                                     $sumPrix = $sumBudget = DB::table('services')
-                                       ->join('evenements', 'evenements.id', '=', 'services.evenement_id')
+                                     $sumPrix = $sumBudget = DB::table('evenements')
                                         ->where('evenements.utilisateur_id', Auth::id())
-                                        ->sum('s_budget');
+                                        ->sum('budget_total');
                                     @endphp
                                     <div class="col-6 col-sm-3">
                                         <div class="p-3 border border-dashed border-start-0">
@@ -263,7 +262,7 @@
                                     </div>
                                     <!--end col-->
                                     @php
-                                     $sumPrix = $sumDepenses = DB::table('depense')
+                                      $sumDepenses = DB::table('depense')
                                         ->join('evenements', 'evenements.id', '=', 'depense.evenement_id')
                                         ->where('evenements.utilisateur_id', Auth::id())
                                         ->sum('s_depense');
@@ -271,7 +270,7 @@
                                     <div class="col-6 col-sm-3">
                                         <div class="p-3 border border-dashed border-start-0">
                                             <h5 class="mb-1"><span class="counter-value"
-                                                    data-target="{{$sumPrix}}">0</span> FCFA</h5>
+                                                    data-target="{{$sumDepenses}}">0</span> FCFA</h5>
                                             <p class="text-muted mb-0">Total dépenses</p>
                                         </div>
                                     </div>

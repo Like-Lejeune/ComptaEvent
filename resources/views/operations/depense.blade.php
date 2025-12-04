@@ -108,6 +108,10 @@
                                         </option>
                                         @endforeach
                                     </select>
+                                    @foreach ( $event as $event )
+                                        <input type="hidden" value="{{$event->evenement_id}}" name="evenement_id">
+                                       @break   
+                                    @endforeach
                                 </div><br>
 
                                 <div class="col-xxl-6">
