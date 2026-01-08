@@ -46,10 +46,11 @@ Route::post('/pay/{plan}', [SubscriptionController::class, 'pay'])->name('subscr
 Route::middleware(['auth'])->group(function () {
 
     // Free plan 
-
+    Route::get('/evenements', [Menu::class, 'eventMenu'])->name('events');
     Route::get('administrator', [Menu::class, 'administrator'])->name('administrator');
     Route::get('nouvelleDepense', [depense::class, 'nouvelle_depense'])->name('nouvelleDepense');
     Route::get('historique_depense/{service_id}', [depense::class, 'historique_depense'])->name('historique_depense');
+    Route::get('serviceMenu/{ev_id}', [Menu::class, 'serviceMenu'])->name('serviceMenu');
     Route::get('afficherService', [service::class, 'index'])->name('afficherService');
     Route::get('editService/{service_id}', [service::class, 'editService'])->name('editService');
     Route::post('update_service', [service::class, 'update_service'])->name('update_service');

@@ -106,7 +106,6 @@
         <tr>
             <td><b>Projet: </b></td>
             <td class="blue"></td>
-            <td class="blue"></td>
         </tr>
         <tr>
             <td><b>Budget Global</b></td>

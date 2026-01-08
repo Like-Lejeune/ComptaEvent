@@ -219,18 +219,18 @@
                     <ul class="navbar-nav" id="navbar-nav">
                         @if (auth()->User()->type =='admin')
                         <li class="nav-item">
-                            <a class="nav-link menu-link" href="{{ route('administrator') }}">
+                            {{-- <a class="nav-link menu-link" href="{{ route('administrator') }}">
                                 <i class="mdi mdi-speedometer"></i> <span data-key="t-dashboards" style="font-size:12px;">Accueil</span>
+                            </a> --}}
+                        </li>
+                         <li class="nav-item">
+                            <a class="nav-link menu-link" href="{{ route('administrator') }}" >
+                            <i class="ri-dashboard-fill"></i> <span data-key="t-dashboards" style="font-size:12px;">Activité</span>
                             </a>
                         </li>
                          <li class="nav-item">
-                            <a class="nav-link menu-link" href="{{ route('afficherService') }}" >
-                            <i class="ri-dashboard-fill"></i> <span data-key="t-dashboards" style="font-size:12px;">Evenements</span>
-                            </a>
-                        </li>
-                         <li class="nav-item">
-                            <a class="nav-link menu-link" href="{{ route('afficherService') }}" >
-                            <i class="ri-dashboard-fill"></i> <span data-key="t-dashboards" style="font-size:12px;">Services</span>
+                            <a class="nav-link menu-link" href="{{ route('events') }}" >
+                            <i class="ri-dashboard-fill"></i> <span data-key="t-dashboards" style="font-size:12px;">Events</span>
                             </a>
                         </li>
                         <li class="nav-item">
@@ -243,14 +243,9 @@
                                 <i class="mdi mdi-speedometer"></i> <span data-key="t-dashboards" style="font-size:12px;">Utilisateur</span>
                             </a>
                         </li>
-                        <li class="nav-item">
-                            <a class="nav-link menu-link" href="" >
-                            <i class="ri-dashboard-fill"></i> <span data-key="t-dashboards" style="font-size:12px;">Activité</span>
-                            </a>
-                        </li>
                         @else
                             <a class="nav-link menu-link" href="{{ route('user_menu') }}">
-                                <i class="mdi mdi-speedometer"></i> <span data-key="t-dashboards" style="font-size:12px;">Accueil</span>
+                                <i class="mdi mdi-speedometer"></i> <span data-key="t-dashboards" style="font-size:12px;">Activité</span>
                             </a>
                         @endif
                        <!-- end Dashboard Menu -->

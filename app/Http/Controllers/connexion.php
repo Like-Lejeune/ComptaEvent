@@ -223,6 +223,7 @@ class connexion extends Controller
         // Redirection selon le type
         if ($user->type === 'admin' || $user->type === 'super') {
             return redirect()->route('administrator');
+            
         }
 
         return redirect()->route('user_menu');
